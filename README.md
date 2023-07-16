@@ -24,7 +24,7 @@
 
 5. Select **Export selected assets**.
 6. Choose a location and click on **Select folder**.
-7. Run the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** to decrypt and split 2 of the files to JSON.
+7. Run the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** to decrypt all 3 CARD_* files and split the **CARD_Name** and **CARD_Desc** files to JSON.
 
 ## Replacing the card text and reconverting the CARD_* files 
 1. Run the file **_CARD_Desc_replace.py** to replace the card text.

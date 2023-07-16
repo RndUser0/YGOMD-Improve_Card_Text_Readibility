@@ -12,17 +12,18 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * Play through the tutorial.
 * Let the game download all files after that.
 
-### Installing the mod:
+### Installing/Uninstalling the mod:
 1. Close the game if it's running.
-2. Select the folder "0000" from the ZIP archive by clicking on it in Windows Explorer.
-3. Copy the selected folder to the clipboard by pressing [Ctrl] + [C].
-4. Go to your Steam library.
-5. Right-click "Yu-Gi-Oh! Master Duel"
-6. Go to "Manage → Browse local files".
-7. Open the folder "LocalData".
-8. Inside that folder is another folder whose name varies but it always has 8 alphanumeric characters, for example 1a23bc4d, open it.
-9. Paste the folder from the clipboard by pressing [Ctrl] + [V].
-10. Choose the option to overwrite/replace all files and let the process finish.
+2. Open the "Install mod" or "Uninstall mod" folder from the ZIP archive in Windows Explorer.
+3. Select the folder "0000" by clicking on it.
+4. Copy the selected folder to the clipboard by pressing [Ctrl] + [C].
+5. Go to your Steam library.
+6. Right-click "Yu-Gi-Oh! Master Duel"
+7. Go to "Manage → Browse local files".
+8. Open the folder "LocalData".
+9. Inside that folder is another folder whose name varies but it always has 8 alphanumeric characters, for example 1a23bc4d, open it.
+10. Paste the folder from the clipboard by pressing [Ctrl] + [V].
+11. Choose the option to overwrite/replace all files and let the process finish.
 
 ## Manual modding
 ### Required tools for card text replacement

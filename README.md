@@ -21,9 +21,9 @@
 4. Select the 3 files, then right-click one of them.
 5. Select **Export selected assets**.
 6. Choose a location and click on **Select folder**.
-7. Copy the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** from this repository into the same folder and run it to decrypt and split 2 of the files to JSON.
+7. Run the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** to decrypt and split 2 of the files to JSON.
 
-## Replacing the card text
+## Replacing the card text and reconverting the CARD_* files 
 1. Run the file **_CARD_Desc_replace.py** to replace the card text.
 2. Run the file **_CARD_merge+calc_index.py** to reconvert and reencrypt the files, so the game can read them.
 

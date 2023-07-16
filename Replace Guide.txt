@@ -10,20 +10,26 @@ min.
 max.\n\n
 max. 
 
-P.U.N.K.\n\n
-P.U.N.K. 
-
 \n\nThen
 \nThen
 
 \n\nYou can only use this effect
 \nYou can only use this effect
 
+\n\nThis is a Quick
+\nThis is a Quick
+
+\n\n(Transfer its materials to this card.) 
+ (Transfer its materials to this card.)\n\n
+ 
+ card(s)\n\n
+ card(s) 
+
+P.U.N.K.\n\n
+P.U.N.K. 
+
 D.D.\n\n
 D.D. 
-
-B.E.S.\n\n
-B.E.S. 
 
 T.G.\n\n
 T.G. 
@@ -31,11 +37,14 @@ T.G.
 U.A.\n\n
 U.A. 
 
-Dr.\n\n
-Dr. 
-
 F.A.\n\n
 F.A. 
 
 A.I.\n\n
 A.I. 
+
+B.E.S.\n\n
+B.E.S. 
+
+Dr.\n\n
+Dr. 

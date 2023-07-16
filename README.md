@@ -45,7 +45,7 @@
 12. Repeat steps 1 to 11 for the **CARD_Indx** file.
 
 ## Credits
-* [akintos](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b) for the decryption script
+* [akintos](https://gist.github.com/akintos) for [the decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)
 * [timelic](https://forums.nexusmods.com/index.php?/user/145588218-timelic) for the splitting and merge scripts
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
 * [thenoblethief](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for [the updated Replace Guide.txt](https://cdn.discordapp.com/attachments/1126958884393844798/1129940730077511821/Replace_Guide.txt)

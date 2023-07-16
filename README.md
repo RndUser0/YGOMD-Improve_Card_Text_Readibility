@@ -34,7 +34,7 @@
 4. Click on **Info**.
 5. In the **Assets Info** window, select the row with the name **CARD_Desc** which has the **TextAsset** type.
 
-![image](https://user-images.githubusercontent.com/4957582/181439832-73631410-bd14-43b5-8c5f-189f36c0615b.png)
+![UABEA_import_txt](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/a84268a4-601a-408b-86be-e5343be6b97f)
   
 6. Click on **Plugins** → **Import .txt** → **Ok**.
 7. Click on the drop down box to the right saying **bytes files (\*.bytes)** and select **All types (\*.*)**.

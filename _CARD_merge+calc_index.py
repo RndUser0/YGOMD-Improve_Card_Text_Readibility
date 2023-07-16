@@ -1,6 +1,6 @@
 '''
 Credit:
-timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-timelic
+- timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-timelic
 
 Original source:
 https://bitbucket.org/timel/master-duel-chinese-translation-patch/src/master/%E5%8D%A1%E7%89%87CARD/c_CARD%E5%8E%8B%E7%BC%A9.py
@@ -102,7 +102,7 @@ file_names = ['CARD_Name', 'CARD_Desc', 'CARD_Indx']
 
 
 def encrypt(output_name, b: bytes):
-    m_iCryptoKey = 0xDA  # Remember to change the key
+    m_iCryptoKey = 0x298  # Remember to change the key
 
     data = bytearray(zlib.compress(b))
 

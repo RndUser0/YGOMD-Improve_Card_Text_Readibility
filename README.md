@@ -19,6 +19,9 @@
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.
 4. Select the 3 files, then right-click one of them.
+
+![AssetStudio_export](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/c0674e92-7949-45f8-a809-37b6fc3e0fc7)
+
 5. Select **Export selected assets**.
 6. Choose a location and click on **Select folder**.
 7. Run the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** to decrypt and split 2 of the files to JSON.

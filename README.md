@@ -32,7 +32,7 @@
 2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
 3. Click on **Memory**.
 4. Click on **Info**.
-5. In the **Assets Info** window, select the row with the **TextAsset** type.
+5. In the **Assets Info** window, select the row with the name **CARD_Desc** which has the **TextAsset** type.
 
 ![image](https://user-images.githubusercontent.com/4957582/181439832-73631410-bd14-43b5-8c5f-189f36c0615b.png)
   

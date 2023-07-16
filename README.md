@@ -1,42 +1,54 @@
-# Master-Duel-Effect
+# YGOMD-Improve_Card_Text_Readibility
 
-## Download
-* [Nexus Mods](https://www.nexusmods.com/yugiohmasterduel/mods/340)
-
-## Required Tools for build
+## Required tools
 * [Python 3](https://www.python.org/downloads/)
-* [AssetStudio](https://github.com/Perfare/AssetStudio/releases) - Tool for read a list of asset in Unity
-* [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for pack a mod file back into the game
+* [AssetStudio](https://github.com/Perfare/AssetStudio/releases) - Tool for extracting Unity assets
+* [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for importing a modded file back into a game file
 
-## Extracting language files from the game
-1. Following this [Yu-Gi-Oh modding guide](https://www.nexusmods.com/yugiohmasterduel/articles/3) to use AssetStudio. However, the file we want to load is `Yu-Gi-Oh!  Master Duel\masterduel_Data\data.unity3d`
-2. Extract `CARD_Desc`, `CARD_Indx` and `CARD_Name` from the game using AssetStudio
-3. In the directory with 3 files above. Run `python "_CARD_decrypt_Desc+Indx+Name.py"` to decrypt the file
-4. Run `python "_CARD_Name+Desc_split.py"` to convert those files into JSON
+## Location of the Unity files which contain the English CARD_* files used by the game:
+* CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ab\abda12b1
+* CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\da\da0368f7
+* CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
 
+## Preparation
+1. Copy the above files into a new folder.
+2. Copy all files from this repository into the same folder, except **_find_crypto_key.py** and **README.md** which are not necessary for replacing card text.
 
-## Build and replacing to the game file
-1. Once you update the `CARD_Desc.dec.json` and `CARD_Desc.dec.json`. Then run the command `python "_CARD_merge+calc_index.py"`. This will give you 3 files `CARD_Desc`, `CARD_Indx` and `CARD_Name`
-2. Rename 3 files above to be `.txt`. We doing this because UABEA only allow us to import `.txt` file.
-3. We need to identify `path_id` of the file. Run AssetStudio and open the `data.unity3d` file from `Yu-Gi-Oh!  Master Duel\masterduel_Data`
+## Extracting the files
+1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
+2. Click on the **Asset List** tab.
+3. Click on **Filter Type** → **TextAsset**.
+4. Select the 3 files, then right-click one of them.
+5. Select **Export selected assets**.
+6. Choose a location and click on **Select folder**.
+7. Copy the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** from this repository into the same folder and run it to decrypt and split 2 of the files to JSON.
 
-![image](https://user-images.githubusercontent.com/4957582/181438129-98fa50ce-c50a-47e6-99b3-9df92f0ee1bd.png)
+## Replacing the card text
+1. Run the file **_CARD_Desc_replace.py** to replace the card text.
+2. Run the file **_CARD_merge+calc_index.py** to reconvert and reencrypt the files, so the game can read them.
 
-4. Remember the `PathId` of the language that you want to replace. Do this for every files (`CARD_Desc`, `CARD_Indx` and `CARD_Name`). Then close the AssetStudio.
-
-![image](https://user-images.githubusercontent.com/4957582/181438417-b9b2ce1a-f26c-4a0f-bf58-280cbc47444f.png)
-
-5. Open UABEA. Open `data.unity3d` and then click Info.
-6. Try to locate the all 3 CARD_ files with the same PathId. Click `Plugins > Import .txt`. And then importing `.txt` files from step 2.
+## Importing the modified CARD_* files back into the Unity files.
+1. Create a backup of the original Unity file containing the **CARD_Desc** file .
+2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
+3. Click on **Memory**.
+4. Click on **Info**.
+5. In the **Assets Info** window, select the row with the **TextAsset** type.
 
 ![image](https://user-images.githubusercontent.com/4957582/181439832-73631410-bd14-43b5-8c5f-189f36c0615b.png)
+  
+6. Click on **Plugins** → **Import .txt** → **Ok**.
+7. Click on the drop down box to the right saying **bytes files (\*.bytes)** and select **All types (\*.*)**.
+8. Select the **CARD_Desc** file.
+9. Click on **File** → **Save** → **OK**.
+10. Close the **Assets Info** window.
+11. In the main **UABEA** window click on **File** → **Save**.
+12. Repeat steps 1 to 11 for the **CARD_Indx** file.
 
-7. In the Assets Info window. `File > Save` and then `File > Close`.
-8. Then Save again on UABEA window. UABEA won't allow us to override opened file. So we need to save it as another name.
-9. Replace the old `data.unity3d` file with the new one. (Make sure you made a copy of it)
+## Credits
+* [akintos](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b) for the decryption script
+* [timelic](https://forums.nexusmods.com/index.php?/user/145588218-timelic) for the splitting and merge scripts
+* [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
+* [thenoblethief](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for [the updated Replace Guide.txt](https://cdn.discordapp.com/attachments/1126958884393844798/1129940730077511821/Replace_Guide.txt)
 
-## Contribution
-* You can create a pull request to update `CARD_Desc.dec.json` and `CARD_Desc.dec.json`. 
-
-## Special Thanks
-* [Yu-Gi-Oh modding guide](https://www.nexusmods.com/yugiohmasterduel/articles/3) from Nexus mod 
+## Links
+* [My modding guide on NexusMods](https://www.nexusmods.com/yugiohmasterduel/articles/3)

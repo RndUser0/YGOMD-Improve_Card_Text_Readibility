@@ -1,20 +1,45 @@
 # YGOMD-Improve_Card_Text_Readibility
 
-## Required tools
+## Installing the mod from the Releases page
+### Introduction
+The mod contains only text files but to keep the risk of being warned or banned as minimal as possible, you should note the following while using this mod:
+* Don't show your Master Duel, Konami, Steam or Google account information in videos or images that you publish.
+* When you post anything regarding Master Duel mods, don't use your main Master Duel, Konami, Steam or Google account for that.
+* There's a pattern at the top right of the screen when you're logged into Master Duel which you should censor if you publish images or videos of Master Duel because this pattern differs for every account and could be used to identify your account.
+
+### Requirements for using Master Duel mods
+* Install Yu-Gi-Oh! Master Duel on your PC via Steam.
+* Play through the tutorial.
+* Let the game download all files after that.
+
+### Installing the mod:
+1. Close the game if it's running.
+2. Select the folder "0000" from the ZIP archive by clicking on it in Windows Explorer.
+3. Copy the selected folder to the clipboard by pressing [Ctrl] + [C].
+4. Go to your Steam library.
+5. Right-click "Yu-Gi-Oh! Master Duel"
+6. Go to "Manage → Browse local files".
+7. Open the folder "LocalData".
+8. Inside that folder is another folder whose name varies but it always has 8 alphanumeric characters, for example 1a23bc4d, open it.
+9. Paste the folder from the clipboard by pressing [Ctrl] + [V].
+10. Choose the option to overwrite/replace all files and let the process finish.
+
+## Manual modding
+### Required tools for card text replacement
 * [Python 3](https://www.python.org/downloads/)
 * [AssetStudio](https://github.com/Perfare/AssetStudio/releases) - Tool for extracting Unity assets
 * [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for importing a modded file back into a game file
 
-## Location of the Unity files which contain the English CARD_* files used by the game:
+### Location of the Unity files which contain the English CARD_* files used by the game:
 * CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ab\abda12b1
 * CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\da\da0368f7
 * CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
 
-## Preparation
+### Preparation
 1. Copy the above Unity files into a new folder.
 2. Copy all files from this repository into the same folder, except **_find_crypto_key.py** and **README.md** which are not necessary for replacing card text.
 
-## Extracting the CARD_* files from the Unity files
+### Extracting the CARD_* files from the Unity files
 1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.
@@ -26,11 +51,11 @@
 6. Choose a location and click on **Select folder**.
 7. Run the file **_CARD_decrypt_Desc+Indx+Name_and_split_Desc+Name.py** to decrypt all 3 CARD_* files and split the **CARD_Name** and **CARD_Desc** files to JSON.
 
-## Replacing the card text and reconverting the CARD_* files 
+### Replacing the card text and reconverting the CARD_* files 
 1. Run the file **_CARD_Desc_replace.py** to replace the card text.
 2. Run the file **_CARD_merge+calc_index.py** to reconvert and reencrypt the files, so the game can read them.
 
-## Importing the modified CARD_* files back into the Unity files.
+### Importing the modified CARD_* files back into the Unity files.
 1. Create a backup of the original Unity file containing the **CARD_Desc** file .
 2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
 3. Click on **Memory**.
@@ -47,11 +72,11 @@
 11. In the main **UABEA** window click on **File** → **Save**.
 12. Repeat steps 1 to 11 for the **CARD_Indx** file.
 
-## Credits
+### Credits
 * [akintos](https://gist.github.com/akintos) for [the decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)
 * [timelic](https://forums.nexusmods.com/index.php?/user/145588218-timelic) for the split and merge scripts
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
 * [thenoblethief](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for [the updated Replace Guide.txt](https://cdn.discordapp.com/attachments/1126958884393844798/1129940730077511821/Replace_Guide.txt)
 
-## Links
+### Links
 * [My modding guide on NexusMods](https://www.nexusmods.com/yugiohmasterduel/articles/3)

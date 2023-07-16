@@ -11,10 +11,10 @@
 * CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
 
 ## Preparation
-1. Copy the above files into a new folder.
+1. Copy the above Unity files into a new folder.
 2. Copy all files from this repository into the same folder, except **_find_crypto_key.py** and **README.md** which are not necessary for replacing card text.
 
-## Extracting the files
+## Extracting the CARD_* files from the Unity files
 1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.

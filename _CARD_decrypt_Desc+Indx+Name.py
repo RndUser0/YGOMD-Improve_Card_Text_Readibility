@@ -1,14 +1,12 @@
 '''
-Credits:
-- akintos from GitHub: https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b
-- timelic from NexusMods for the new crypto key: https://bitbucket.org/timel/master-duel-chinese-translation-patch/src/master/%E5%8D%A1%E7%89%87CARD/a_CARD%E8%A7%A3%E5%AF%86.py
+Credit: akintos: https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b
 '''
 
 import zlib
 
 file_names = ['CARD_Desc', 'CARD_Indx', 'CARD_Name']
 
-m_iCryptoKey = 0xda
+m_iCryptoKey = 0x298
 
 
 def Decrypt(file_name):

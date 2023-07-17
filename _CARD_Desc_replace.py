@@ -39,6 +39,7 @@ with open(RG_filename, 'rt', encoding="utf8") as f_RG:
 		#if not line == '' and not line == ' ': #skip empty lines (replaced by line below)
 		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines		
 			RG_list.append(line) #append line to list
+	f_RG.close()
 			
 #Apply string replacement instructions to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:

@@ -27,7 +27,7 @@ if FileCheck('CARD_Desc.dec.json') == 0:
 	input()
 	sys.exit()
 
-#Create list for RegEx patterns:
+#Create list for string replacement instructions:
 RG_list=[]
 
 #Read Replace Guide text file into the list:
@@ -40,7 +40,7 @@ with open(RG_filename, 'rt', encoding="utf8") as f_RG:
 		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines		
 			RG_list.append(line) #append line to list
 			
-#Apply RegEx patterns to CARD_Desc JSON file:
+#Apply string replacement instructions to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
 	CARD_Desc_content = f_CARD_Desc.read()
 	CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#use 1st and 2nd list entries for RegEx replacement

@@ -19,7 +19,13 @@ elif FileCheck('Replace_Guide.txt') == 1:
 else:
 	print('Replace guide text file not found. The file name must be \"Replace Guide.txt\" or \"Replace_Guide.txt\".\nPress <ENTER> to exit.')
 	input()
-	sys.exit()	
+	sys.exit()
+
+#Check if file "CARD_Desc.dec.json" exists:
+if FileCheck('CARD_Desc.dec.json') == 0:
+	print('The required file "CARD_Desc.dec.json" was not found.\nPress <ENTER> to exit.')
+	input()
+	sys.exit()
 
 #Create list for RegEx patterns:
 RG_list=[]

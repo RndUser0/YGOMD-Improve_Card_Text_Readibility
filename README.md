@@ -1,4 +1,4 @@
-# YGOMD-Improve_Card_Text_Readibility
+# Yu-Gi-Oh! Master Duel - Improve Card Text Readibility mod
 
 ## Installing the mod from the Releases page
 ### Introduction

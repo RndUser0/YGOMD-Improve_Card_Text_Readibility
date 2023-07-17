@@ -26,11 +26,14 @@ RG_list=[]
 
 #Read Replace Guide text file into the list:
 with open(RG_filename, 'rt', encoding="utf8") as f_RG:
-	for line in f_RG:
-		line = line.strip('\n') #remove line break
-		if not line == '' and not line == ' ': #skip empty lines
+	line_counter = 0	
+	for line in f_RG:		
+		line_counter += 1
+		line = line.strip('\n') #remove line break		
+		#if not line == '' and not line == ' ': #skip empty lines (replaced by line below)
+		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines		
 			RG_list.append(line) #append line to list
-
+			
 #Apply RegEx patterns to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
 	CARD_Desc_content = f_CARD_Desc.read()
@@ -43,3 +46,8 @@ with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
 with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:	
 	f_CARD_Desc.write(CARD_Desc_content_new)
 	f_CARD_Desc.close()
+
+'''
+print("Press <ENTER> to continue")
+input()
+'''

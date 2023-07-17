@@ -42,7 +42,7 @@ with open(RG_filename, 'rt', encoding="utf8") as f_RG:
 			
 #Apply string replacement instructions to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
-	CARD_Desc_content = f_CARD_Desc.read()
+	CARD_Desc_content = f_CARD_Desc.read() #read file content into string variable
 	CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#use 1st and 2nd list entries for RegEx replacement
 	for i in range(2,len(RG_list)-1,2): #use list entries from 3 and above for simple string replacement
 		CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])

@@ -33,24 +33,26 @@ RG_list=[]
 #Read Replace Guide text file into the list:
 with open(RG_filename, 'rt', encoding="utf8") as f_RG:
 	line_counter = 0	
-	for line in f_RG:		
+	for line in f_RG:
 		line_counter += 1
-		line = line.strip('\n') #remove line break		
+		line = line.strip('\n') #remove line break
 		#if not line == '' and not line == ' ': #skip empty lines (replaced by line below)
-		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines		
+		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines
 			RG_list.append(line) #append line to list
 	f_RG.close()
-			
-#Apply string replacement instructions to CARD_Desc JSON file:
+
+#Read CARD_Desc JSON file into string variable:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
-	CARD_Desc_content = f_CARD_Desc.read() #read file content into string variable
-	CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#use 1st and 2nd list entries for RegEx replacement
-	for i in range(2,len(RG_list)-1,2): #use list entries from 3 and above for simple string replacement
-		CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])
-	f_CARD_Desc.close()
+	CARD_Desc_content = f_CARD_Desc.read()
+f_CARD_Desc.close()
+
+#Apply string replacement instructions:
+CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#use 1st and 2nd list entries for RegEx replacement
+for i in range(2,len(RG_list)-1,2): #use list entries from 3 and above for simple string replacement
+	CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])	
 
 #Write changes to CARD_Desc JSON file:
-with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:	
+with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:
 	f_CARD_Desc.write(CARD_Desc_content_new)
 	f_CARD_Desc.close()
 

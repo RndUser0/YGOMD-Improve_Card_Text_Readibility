@@ -4,6 +4,9 @@
 . 
 .\n\n
 
+\.\\n\\n(This card[^.]*this effect[^.]*\.)
+.\\n\1
+
 min.\n\n
 min. 
 

@@ -41,6 +41,12 @@ with open(RG_filename, 'rt', encoding="utf8") as f_RG:
 			RG_list.append(line) #append line to list
 	f_RG.close()
 
+'''
+for i in range(6):
+	print(RG_list[i])
+input()
+'''
+
 #Read CARD_Desc JSON file into string variable:
 with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
 	CARD_Desc_content = f_CARD_Desc.read()
@@ -48,7 +54,7 @@ f_CARD_Desc.close()
 
 #Apply string replacement instructions:
 for i in range(0,len(RG_list)-1,2):
-	if not any([x in RG_list[i] for x in ['*','^']]): #check if replacement instruction contains RegEx
+	if not any([x in RG_list[i] for x in [r'\\n']]): #check if replacement instruction contains RegEx
 		CARD_Desc_content = CARD_Desc_content.replace(RG_list[i], RG_list[i+1]) #Simple string replacement
 	else:
 		CARD_Desc_content = re.sub(RG_list[i], RG_list[i+1], CARD_Desc_content, count=0, flags=0) #RegEx replacement

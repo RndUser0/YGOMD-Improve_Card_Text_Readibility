@@ -47,9 +47,11 @@ with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
 f_CARD_Desc.close()
 
 #Apply string replacement instructions:
-CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#use 1st and 2nd list entries for RegEx replacement
-for i in range(2,len(RG_list)-1,2): #use list entries from 3 and above for simple string replacement
-	CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])	
+for i in range(0,len(RG_list)-1,2):
+	if not any([x in RG_list[i] for x in ['*','^']]): #check if replacement instruction contains RegEx
+		CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])	#Simple string replacement
+	else:
+		CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#RegEx replacement
 
 #Write changes to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:

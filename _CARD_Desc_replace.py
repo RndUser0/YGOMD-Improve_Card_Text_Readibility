@@ -49,13 +49,13 @@ f_CARD_Desc.close()
 #Apply string replacement instructions:
 for i in range(0,len(RG_list)-1,2):
 	if not any([x in RG_list[i] for x in ['*','^']]): #check if replacement instruction contains RegEx
-		CARD_Desc_content_new = CARD_Desc_content_new.replace(RG_list[i], RG_list[i+1])	#Simple string replacement
+		CARD_Desc_content = CARD_Desc_content.replace(RG_list[i], RG_list[i+1]) #Simple string replacement
 	else:
-		CARD_Desc_content_new = re.sub(RG_list[0], RG_list[1], CARD_Desc_content, count=0, flags=0)	#RegEx replacement
+		CARD_Desc_content = re.sub(RG_list[i], RG_list[i+1], CARD_Desc_content, count=0, flags=0) #RegEx replacement
 
 #Write changes to CARD_Desc JSON file:
 with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:
-	f_CARD_Desc.write(CARD_Desc_content_new)
+	f_CARD_Desc.write(CARD_Desc_content)
 	f_CARD_Desc.close()
 
 '''

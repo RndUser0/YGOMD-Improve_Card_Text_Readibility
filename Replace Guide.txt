@@ -10,6 +10,18 @@ min.
 max.\n\n
 max. 
 
+.\n\n(
+. (
+
+. (Quick Effect):
+.\n\n(Quick Effect):
+
+. (This card
+.\n\n(This card
+
+.) 
+.)\n\n
+
 \n\nThen
 \nThen
 
@@ -22,6 +34,9 @@ max.
 \n\n(Transfer its materials to this card.) 
  (Transfer its materials to this card.)\n\n
  
+monster(s)\n\n
+monster(s) 
+
  card(s)\n\n
  card(s) 
 
@@ -48,3 +63,15 @@ B.E.S.
 
 Dr.\n\n
 Dr. 
+
+N.As.H.\n\n
+N.As.H. 
+
+N.As.Ch.\n\n
+N.As.Ch. 
+
+Ms.\n\n
+Ms. 
+
+Jr.\n\n
+Jr. 

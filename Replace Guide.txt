@@ -34,11 +34,14 @@ max.
 \n\n(Transfer its materials to this card.) 
  (Transfer its materials to this card.)\n\n
  
+.\n\nTransfer its material
+. Transfer its material
+
 monster(s)\n\n
 monster(s) 
 
- card(s)\n\n
- card(s) 
+card(s)\n\n
+card(s) 
 
 P.U.N.K.\n\n
 P.U.N.K. 
@@ -75,3 +78,6 @@ Ms.
 
 Jr.\n\n
 Jr. 
+
+vs.\n\n
+vs. 

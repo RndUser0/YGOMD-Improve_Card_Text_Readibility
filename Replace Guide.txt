@@ -7,6 +7,12 @@
 \.\\n\\n(This card[^.]*this effect[^.]*\.)
 .\\n\1
 
+\.\\n\\n(This card[^.]*this way[^.]*\.)
+.\\n\1
+
+\.\\n\\n(That[^.]*\.)
+.\\n\1
+
 min.\n\n
 min. 
 
@@ -39,6 +45,18 @@ max.
  
 .\n\nTransfer its material
 . Transfer its material
+
+.\n\nOtherwise
+. Otherwise
+
+.\n\nIts
+. Its
+
+.\n\nAttached
+. Attached
+
+\.\\n\\n(\(?Xyz Materials )
+.\\n\1
 
 monster(s)\n\n
 monster(s) 

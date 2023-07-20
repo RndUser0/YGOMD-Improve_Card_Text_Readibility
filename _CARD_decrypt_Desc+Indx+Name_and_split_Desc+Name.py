@@ -27,9 +27,12 @@ def Decrypt(file_name):
         f.write(zlib.decompress(data))
 
 
+print('Decrypting files...')
+
 for name in file_names:
     Decrypt(name)
-	
+
+print('Finished decrypting files.')	
 
 def WriteJSON(l: list, json_file_path: str):
     with open(json_file_path, 'w', encoding='utf8') as f:
@@ -83,6 +86,10 @@ def ProgressiveProcessing(file_name, start):
 	
     WriteJSON(desc, f"{file_name}.dec.json")
 
+print('Splitting files...')
+
 if __name__ == '__main__':    
     ProgressiveProcessing(file_names[0], 0)    
     ProgressiveProcessing(file_names[1], 4)
+
+print('Finished splitting files.')

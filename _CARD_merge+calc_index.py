@@ -34,8 +34,12 @@ def solve_P_desc(desc):
 
     return res
 
+print('Reading files...')
+
 CARD_Name_json: list = ReadJSON(f"CARD_Name.dec.json")
 CARD_Desc_json: list = ReadJSON(f"CARD_Desc.dec.json")
+
+print('Finished reading files...')
 
 name_merge_string = "\u0000" * 8  # There are eight blanks at the beginning
 desc_merge_string = "\u0000" * 8
@@ -44,6 +48,8 @@ merge_string = {"name": "\u0000" * 8, "desc": "\u0000" * 8}
 
 name_indx = [0]
 desc_indx = [0]
+
+print('Merging files...')
 
 for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English desc is one less than name
     name = CARD_Name_json[i]
@@ -68,6 +74,8 @@ for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English
     helper(name, name_indx, "name", merge_string)
     helper(desc, desc_indx, "desc", merge_string)
 
+print('Finished merging files.\nCalculating index...')
+
 # Compression
 # Can't compress. Compression is a problem.
 
@@ -82,8 +90,7 @@ for i in range(len(name_indx)):
     card_indx.append(name_indx[i])
     card_indx.append(desc_indx[i])
 
-print(card_indx)
-
+#print(card_indx)
 
 def intTo4Hex(num: int) -> List[int]:
     res = []
@@ -96,6 +103,8 @@ def intTo4Hex(num: int) -> List[int]:
 card_indx_merge = []
 for item in card_indx:
     card_indx_merge.extend(intTo4Hex(item))
+
+print('Finished calculating index.\nEncrypting files...')
 
 # Direct Encryption
 file_names = ['CARD_Name', 'CARD_Desc', 'CARD_Indx']
@@ -116,9 +125,10 @@ def encrypt(output_name, b: bytes):
         f.write((data))
     f.close()
 
-
 encrypt(f'CARD_Name',
         bytes(merge_string["name"], encoding='utf-8'))
 encrypt(f'CARD_Desc',
         bytes(merge_string["desc"], encoding='utf-8'))
 encrypt(f'CARD_Indx', bytes(card_indx_merge))
+
+print('Finished encrypting files.')

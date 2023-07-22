@@ -6,7 +6,7 @@ timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-t
 
 from typing import List
 import json
-import os
+#import os
 import zlib
 
 def FileCheck(filename):
@@ -56,19 +56,18 @@ else:
 	while True:
 		try:
 			Decrypt('CARD_Indx')
-			if os.stat('CARD_Indx.dec').st_size > 0:						
-				with open('!CryptoKey.txt', 'w') as f_CryptoKey:
-					f_CryptoKey.write(hex(m_iCryptoKey))
-				f_CryptoKey.close()
-				print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
+			#if os.stat('CARD_Indx.dec').st_size > 0:
 			break
 		except zlib.error:
 			#print('Wrong crypto key:', hex(m_iCryptoKey), ' (zlib error)')
 			m_iCryptoKey = m_iCryptoKey + 1
 		#except Exception:
 			#print('Unexpected {err=}, {type(err)=}')
-		#else:
-
+		#else:	
+	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
+		f_CryptoKey.write(hex(m_iCryptoKey))
+	f_CryptoKey.close()
+	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
 
 # 2. Decrypt CARD_Desc, Card_Indx + CARD_Name
 

@@ -38,7 +38,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 
 ### Preparation
 1. Copy the above Unity files into a new folder.
-2. Copy all files from this repository into the same folder, except **_find_crypto_key.py** and **README.md** which are not necessary for replacing card text.
+2. Copy all files from this repository into the same folder, except maybe **README.md** which is the document you are reading right now.
 
 ### Extracting the CARD_* files from the Unity files
 1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.

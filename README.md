@@ -82,7 +82,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * [akintos](https://gist.github.com/akintos) for [the decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)
 * [timelic](https://forums.nexusmods.com/index.php?/user/145588218-timelic) for the split and merge scripts
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
-* [thenoblethief](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for [the updated Replace Guide.txt](https://cdn.discordapp.com/attachments/1126958884393844798/1129940730077511821/Replace_Guide.txt)
+* [thenoblethief](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for the RegEx replacement instructions except the first one and some of the other ones.
 
 ### Links
 * [My modding guide on NexusMods](https://www.nexusmods.com/yugiohmasterduel/articles/3)

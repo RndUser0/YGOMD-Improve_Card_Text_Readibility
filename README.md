@@ -1,5 +1,10 @@
 # Yu-Gi-Oh! Master Duel - Improve Card Text Readibility mod
 
+## Description
+This mod adds line breaks to card effect text to separate multiple effects from each other:
+
+![YGOMD-Improve_Card_Text_Readibility mod - preview (2023-07-24)](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/402eccc0-a494-487b-9a0f-c0afc24daf17)
+
 ## Installing the mod from the Releases page
 ### Introduction
 The mod contains only text files but to keep the risk of being warned or banned as minimal as possible, you should note the following while using this mod:

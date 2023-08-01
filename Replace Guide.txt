@@ -22,11 +22,14 @@ max.
 .\n\n(
 . (
 
-.\n\nIf you cannot
-. If you cannot
+.\n\nIf you cannot,
+. If you cannot,
 
-.\n\nYou can only Special Summon
-.\nYou can only Special Summon
+.\n\nYou can only Special Summon 
+.\nYou can only Special Summon 
+
+.\n\nWhen you do this,
+. When you do this,
 
 . (Quick Effect):
 .\n\n(Quick Effect):

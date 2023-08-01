@@ -22,6 +22,9 @@ max.
 .\n\n(
 . (
 
+.\n\nIf you cannot
+. If you cannot
+
 . (Quick Effect):
 .\n\n(Quick Effect):
 

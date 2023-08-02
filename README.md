@@ -64,8 +64,8 @@ The mod contains only text files but to keep the risk of being warned or banned 
 ### Importing the modified CARD_* files back into the Unity files.
 1. Create a backup of the original Unity file containing the **CARD_Desc** file .
 2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
-3. Click on **Memory**.
-4. Click on **Info**.
+3. If the file you opened is compressed, a new window named **Message Box** will appear. Click on **Memory** there.
+4. Click on **Info** in the main **UABEA** window.
 5. In the **Assets Info** window, select the row with the name **CARD_Desc** which has the **TextAsset** type.
 
 ![UABEA_import_txt](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/a84268a4-601a-408b-86be-e5343be6b97f)

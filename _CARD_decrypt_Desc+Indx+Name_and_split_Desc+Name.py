@@ -118,13 +118,13 @@ def WriteJSON(l: list, json_file_path: str):
     with open(json_file_path, 'w', encoding='utf8') as f:
         json.dump(l, f, ensure_ascii=False, indent=4)
 
-filenames = ['CARD_Name', 'CARD_Desc']
+filenames = [CARD_Name_filename, CARD_Desc_filename]
 
 # The start of Name and Desc is 0 and 4 respectively
 def ProgressiveProcessing(filename, start):
 
     # Read binary index
-    with open(f'CARD_Indx.dec', "rb") as f:
+    with open(CARD_Indx_filename + ".dec", "rb") as f:
         hex_str_list = ("{:02X}".format(int(c))
                         for c in f.read())  # Define variables to accept file contents
     dec_list = [int(s, 16) for s in hex_str_list]  # Convert hexadecimal to decimal
@@ -159,12 +159,12 @@ def ProgressiveProcessing(filename, start):
         return res
 
     # Read Desc file
-    with open(f"{filename}.dec", 'rb') as f:
+    with open(f"{filename}" + ".dec", 'rb') as f:
         data = f.read()
 
     desc = solve(data, indx)
 	
-    WriteJSON(desc, f"{filename}.dec.json")
+    WriteJSON(desc, f"{filename}" + ".dec.json")
 
 print('Splitting files...')
 

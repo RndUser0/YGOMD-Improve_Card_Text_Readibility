@@ -71,8 +71,8 @@ The mod contains only text files but to keep the risk of being warned or banned 
 ![UABEA_import_txt](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/a84268a4-601a-408b-86be-e5343be6b97f)
   
 6. Click on **Plugins** → **Import .txt** → **Ok**.
-7. Click on the drop down box to the right saying **bytes files (\*.bytes)** and select **All types (\*.*)**.
-8. Select the **CARD_Desc** file.
+7. If the **CARD_Desc** file isn't displayed in the list, click on the drop down box to the right saying **bytes files (\*.bytes)** and select **All types (\*.*)**.
+8. Select the **CARD_Desc** file and click **Open** or double-click the file.
 9. Click on **File** → **Save** → **OK**.
 10. Close the **Assets Info** window.
 11. In the main **UABEA** window click on **File** → **Save**.

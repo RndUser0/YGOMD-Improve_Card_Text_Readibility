@@ -55,15 +55,15 @@ for i in filenames_to_check:
 	if FileCheck(i) == 1 and i.find('CARD_Name') != -1 and CARD_Name_filename == '':
 		CARD_Name_filename = i
 	if check_counter == len(filenames_to_check)-1 and CARD_Indx_filename == '':
-		print('CARD_Indx file not found. The file name must be \"CARD_Indx\" or \"CARD_Indx.bytes\".\nPress <ENTER> to exit.')
+		print('CARD_Indx file not found. The file name must be \"CARD_Indx\", \"CARD_Indx.bytes\" or \"CARD_Indx.txt\".\nPress <ENTER> to exit.')
 		input()
 		sys.exit()
 	if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
-		print('CARD_Desc file not found. The file name must be \"CARD_Desc\" or \"CARD_Desc.bytes\".\nPress <ENTER> to exit.')
+		print('CARD_Desc file not found. The file name must be \"CARD_Desc\", \"CARD_Desc.bytes\" or \"CARD_Desc.txt\".\nPress <ENTER> to exit.')
 		input()
 		sys.exit()
 	if check_counter == len(filenames_to_check)-1 and CARD_Name_filename == '':
-		print('CARD_Name file not found. The file name must be \"CARD_Name\" or \"CARD_Name.bytes\".\nPress <ENTER> to exit.')
+		print('CARD_Name file not found. The file name must be \"CARD_Name\", \"CARD_Name.bytes\" or \"CARD_Name.txt\".\nPress <ENTER> to exit.')
 		input()
 		sys.exit()
 

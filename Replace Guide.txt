@@ -31,6 +31,12 @@ max.
 .\n\nWhen you do this,
 . When you do this,
 
+.\nYou can only use each effect of \"
+.\n\nYou can only use each effect of \"
+
+.\nYou can only use 1 \"
+.\n\nYou can only use 1 \"
+
 . (Quick Effect):
 .\n\n(Quick Effect):
 

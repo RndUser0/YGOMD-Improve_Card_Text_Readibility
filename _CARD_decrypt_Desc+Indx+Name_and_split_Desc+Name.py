@@ -7,6 +7,7 @@ timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-t
 from typing import List
 import json
 #import os
+import sys
 import zlib
 
 def FileCheck(filename):
@@ -32,12 +33,41 @@ def Decrypt(filename):
 
 def CheckCryptoKey():	
 	try:
-		Decrypt('CARD_Indx')
+		Decrypt(CARD_Indx_filename)
 		return 1
 	except zlib.error:	
 		return 0
 
-# 1. Find crypto key
+# 1. Check if CARD_* files exist:
+
+filenames_to_check = ['CARD_Indx', 'CARD_Indx.bytes', 'CARD_Indx.txt', 'CARD_Desc', 'CARD_Desc.bytes', 'CARD_Desc.txt', 'CARD_Name', 'CARD_Name.bytes', 'CARD_Name.txt']
+check_counter = -1
+CARD_Indx_filename = ''
+CARD_Desc_filename = ''
+CARD_Name_filename = ''
+
+for i in filenames_to_check:
+	check_counter += 1		
+	if FileCheck(i) == 1 and i.find('CARD_Indx') != -1 and CARD_Indx_filename == '':
+		CARD_Indx_filename = i
+	if FileCheck(i) == 1 and i.find('CARD_Desc') != -1 and CARD_Desc_filename == '':
+		CARD_Desc_filename = i
+	if FileCheck(i) == 1 and i.find('CARD_Name') != -1 and CARD_Name_filename == '':
+		CARD_Name_filename = i
+	if check_counter == len(filenames_to_check)-1 and CARD_Indx_filename == '':
+		print('CARD_Indx file not found. The file name must be \"CARD_Indx\" or \"CARD_Indx.bytes\".\nPress <ENTER> to exit.')
+		input()
+		sys.exit()
+	if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
+		print('CARD_Desc file not found. The file name must be \"CARD_Desc\" or \"CARD_Desc.bytes\".\nPress <ENTER> to exit.')
+		input()
+		sys.exit()
+	if check_counter == len(filenames_to_check)-1 and CARD_Name_filename == '':
+		print('CARD_Name file not found. The file name must be \"CARD_Name\" or \"CARD_Name.bytes\".\nPress <ENTER> to exit.')
+		input()
+		sys.exit()
+
+# 2. Find crypto key
 
 if FileCheck('!CryptoKey.txt') == 1:
 	print('Trying to read crypto key from file...')
@@ -55,7 +85,7 @@ else:
 	m_iCryptoKey = 0x0	
 	while True:
 		try:
-			Decrypt('CARD_Indx')
+			Decrypt(CARD_Indx_filename)
 			#if os.stat('CARD_Indx.dec').st_size > 0:
 			break
 		except zlib.error:
@@ -69,9 +99,9 @@ else:
 	f_CryptoKey.close()
 	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
 
-# 2. Decrypt CARD_Desc, Card_Indx + CARD_Name
+# 3. Decrypt CARD_Desc, Card_Indx + CARD_Name
 
-filenames = ['CARD_Desc', 'CARD_Indx', 'CARD_Name']
+filenames = [CARD_Desc_filename, CARD_Indx_filename, CARD_Name_filename]
 
 print('Decrypting files...')
 
@@ -82,7 +112,7 @@ for name in filenames:
 	else:
 		print("Could not decrypt file " + name + " because it does not appear to exist.")
 
-# 3. Split CARD_Desc + CARD_Name
+# 4. Split CARD_Desc + CARD_Name
 
 def WriteJSON(l: list, json_file_path: str):
     with open(json_file_path, 'w', encoding='utf8') as f:

@@ -34,6 +34,9 @@ max.
 .\nYou can only use each effect of \"
 .\n\nYou can only use each effect of \"
 
+.\nYou can only activate 1 \"
+.\n\nYou can only activate 1 \"
+
 .\nYou can only use 1 \"
 .\n\nYou can only use 1 \"
 

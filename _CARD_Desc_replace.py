@@ -11,7 +11,7 @@ def FileCheck(fn):
       # print 'Error: File does not appear to exist.'
       return 0
 
-#Check which Replace Guide text file to use:
+#1. Check which Replace Guide text file to use:
 if FileCheck('Replace Guide.txt') == 1:
 	RG_filename='Replace Guide.txt'
 elif FileCheck('Replace_Guide.txt') == 1:
@@ -21,18 +21,26 @@ else:
 	input()
 	sys.exit()
 
-#Check if file "CARD_Desc.dec.json" exists:
-if FileCheck('CARD_Desc.dec.json') == 0:
-	print('The required file "CARD_Desc.dec.json" was not found.\nPress <ENTER> to exit.')
-	input()
-	sys.exit()
+#2. Check if decompressed CARD_Desc JSON file exists:
+filenames_to_check = ['CARD_Desc.dec.json', 'CARD_Desc.bytes.dec.json', 'CARD_Desc.txt.dec.json']
+check_counter = -1
+CARD_Desc_filename = ''
 
-#Create list for string replacement instructions:
+for i in filenames_to_check:
+	check_counter += 1
+	if FileCheck(i) == 1 and i.find('CARD_Desc') != -1 and CARD_Desc_filename == '':
+		CARD_Desc_filename = i	
+	if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
+		print('CARD_Desc file not found. The file name must be \"CARD_Desc.dec.json\", \"CARD_Desc.bytes.dec.json\" or \"CARD_Desc.txt.dec.json\".\nPress <ENTER> to exit.')
+		input()
+		sys.exit()
+
+#3. Create list for string replacement instructions:
 RG_list=[]
 
-#Read Replace Guide text file into the list:
+#4. Read Replace Guide text file into the list:
 with open(RG_filename, 'rt', encoding="utf8") as f_RG:
-	line_counter = 0	
+	line_counter = 0
 	for line in f_RG:
 		line_counter += 1
 		line = line.strip('\n') #remove line break
@@ -47,20 +55,20 @@ for i in range(6):
 input()
 '''
 
-#Read CARD_Desc JSON file into string variable:
-with open('CARD_Desc.dec.json', 'rt', encoding="utf8") as f_CARD_Desc:
+#5. Read CARD_Desc JSON file into string variable:
+with open(CARD_Desc_filename, 'rt', encoding="utf8") as f_CARD_Desc:
 	CARD_Desc_content = f_CARD_Desc.read()
 f_CARD_Desc.close()
 
-#Apply string replacement instructions:
+#6. Apply string replacement instructions:
 for i in range(0,len(RG_list)-1,2):
 	if not any([x in RG_list[i] for x in [r'\\n']]): #check if replacement instruction contains RegEx
 		CARD_Desc_content = CARD_Desc_content.replace(RG_list[i], RG_list[i+1]) #Simple string replacement
 	else:
 		CARD_Desc_content = re.sub(RG_list[i], RG_list[i+1], CARD_Desc_content, count=0, flags=0) #RegEx replacement
 
-#Write changes to CARD_Desc JSON file:
-with open('CARD_Desc.dec.json', 'wt', encoding="utf8") as f_CARD_Desc:
+#7. Write changes to CARD_Desc JSON file:
+with open(CARD_Desc_filename, 'wt', encoding="utf8") as f_CARD_Desc:
 	f_CARD_Desc.write(CARD_Desc_content)
 	f_CARD_Desc.close()
 

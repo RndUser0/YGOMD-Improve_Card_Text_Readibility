@@ -1,7 +1,7 @@
 '''
 Credits:
 akintos: https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b
-timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-timelic
+timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 '''
 
 from typing import List
@@ -18,7 +18,7 @@ def FileCheck(filename):
       # print 'Error: File does not appear to exist.'
       return 0
 
-def Decrypt(filename):
+def Decrypt(filename, m_iCryptoKey):
     with open(f'{filename}', "rb") as f:
         data = bytearray(f.read())
 
@@ -31,12 +31,33 @@ def Decrypt(filename):
     with open(f'{filename}' + ".dec", "wb") as f:
         f.write(zlib.decompress(data))
 
-def CheckCryptoKey():	
+def CheckCryptoKey(m_iCryptoKey):
 	try:
-		Decrypt(CARD_Indx_filename)
+		Decrypt(CARD_Indx_filename, m_iCryptoKey)
 		return 1
 	except zlib.error:	
 		return 0
+		
+def FindCryptoKey():
+	print('No correct crypto key found. Searching for crypto key...')
+	m_iCryptoKey = 0x0	
+	while True:
+		try:
+			Decrypt(CARD_Indx_filename, m_iCryptoKey)
+			#if os.stat('CARD_Indx.dec').st_size > 0:
+			break
+		except zlib.error:
+			#print('Wrong crypto key:', hex(m_iCryptoKey), ' (zlib error)')
+			m_iCryptoKey = m_iCryptoKey + 1
+		#except Exception:
+			#print('Unexpected {err=}, {type(err)=}')
+		#else:	
+	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
+		f_CryptoKey.write(hex(m_iCryptoKey))
+	f_CryptoKey.close()
+	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
+	
+	return m_iCryptoKey
 
 # 1. Check if CARD_* files exist:
 
@@ -78,26 +99,10 @@ if FileCheck('!CryptoKey.txt') == 1:
 else:
 	m_iCryptoKey = 0x0
 
-if CheckCryptoKey() == 1:
+if CheckCryptoKey(m_iCryptoKey) == 1:
 	print('The crypto key "' + hex(m_iCryptoKey) + '" is correct.')
 else:
-	print('No correct crypto key found. Searching for crypto key...')
-	m_iCryptoKey = 0x0	
-	while True:
-		try:
-			Decrypt(CARD_Indx_filename)
-			#if os.stat('CARD_Indx.dec').st_size > 0:
-			break
-		except zlib.error:
-			#print('Wrong crypto key:', hex(m_iCryptoKey), ' (zlib error)')
-			m_iCryptoKey = m_iCryptoKey + 1
-		#except Exception:
-			#print('Unexpected {err=}, {type(err)=}')
-		#else:	
-	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
-		f_CryptoKey.write(hex(m_iCryptoKey))
-	f_CryptoKey.close()
-	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
+	m_iCryptoKey = FindCryptoKey()
 
 # 3. Decrypt CARD_Desc, Card_Indx + CARD_Name
 
@@ -107,7 +112,7 @@ print('Decrypting files...')
 
 for name in filenames:
 	if FileCheck(name) == 1:
-		Decrypt(name)
+		Decrypt(name, m_iCryptoKey)
 		print('Decrypted file "' + name + '".')	
 	else:
 		print("Could not decrypt file " + name + " because it does not appear to exist.")

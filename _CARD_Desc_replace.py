@@ -3,7 +3,7 @@ import fileinput
 import os
 import re
 import sys
-from _CARD_decrypt_and_split import FileCheck
+from _defs import *
 
 #1. Check which Replace Guide text file to use:
 if FileCheck('Replace Guide.txt') == 1:

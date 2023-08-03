@@ -7,62 +7,16 @@ from typing import List
 import json
 import sys
 import zlib
-from _CARD_decrypt_and_split import FileCheck, Decrypt, CheckCryptoKey
+from _defs import *
 
 #1. Check if CARD_* files exist:
 
-filenames_to_check = ['CARD_Indx', 'CARD_Indx.bytes', 'CARD_Indx.txt', 'CARD_Desc', 'CARD_Desc.bytes', 'CARD_Desc.txt', 'CARD_Name', 'CARD_Name.bytes', 'CARD_Name.txt']
-check_counter = -1
-CARD_Indx_filename = ''
-CARD_Desc_filename = ''
-CARD_Name_filename = ''
-
-for i in filenames_to_check:
-	check_counter += 1		
-	if FileCheck(i) == 1 and i.find('CARD_Indx') != -1 and CARD_Indx_filename == '':
-		CARD_Indx_filename = i
-	if FileCheck(i) == 1 and i.find('CARD_Desc') != -1 and CARD_Desc_filename == '':
-		CARD_Desc_filename = i
-	if FileCheck(i) == 1 and i.find('CARD_Name') != -1 and CARD_Name_filename == '':
-		CARD_Name_filename = i
-	if check_counter == len(filenames_to_check)-1 and CARD_Indx_filename == '':
-		print('CARD_Indx file not found. The file name must be \"CARD_Indx\", \"CARD_Indx.bytes\" or \"CARD_Indx.txt\".\nPress <ENTER> to exit.')
-		input()
-		sys.exit()
-	if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
-		print('CARD_Desc file not found. The file name must be \"CARD_Desc\", \"CARD_Desc.bytes\" or \"CARD_Desc.txt\".\nPress <ENTER> to exit.')
-		input()
-		sys.exit()
-	if check_counter == len(filenames_to_check)-1 and CARD_Name_filename == '':
-		print('CARD_Name file not found. The file name must be \"CARD_Name\", \"CARD_Name.bytes\" or \"CARD_Name.txt\".\nPress <ENTER> to exit.')
-		input()
-		sys.exit()
+CARD_filenames = Check_CARD_files()
+CARD_Indx_filename = CARD_filenames[0]
+CARD_Desc_filename = CARD_filenames[1]
+CARD_Name_filename = CARD_filenames[2]
 
 #2. Read JSON files
-
-def ReadJSON(json_file_path: str) -> list or dict:
-    with open(json_file_path, 'r', encoding='utf8') as f:
-        dic: list = json.load(f)
-    return dic
-	
-def GetStringLen(s: str):
-    return len(s.encode('utf-8'))
-    res = 0
-    for c in s:
-        res += getCharLen(c)
-    return res
-	
-def Solve_P_desc(desc):
-	
-    res = ""
-    res += monster_effect
-    if p_effect != '':
-        res += '\n'
-        res += separator
-        res += '\n'
-        res += p_effect
-
-    return res
 
 print('Reading files...')
 
@@ -126,60 +80,22 @@ for i in range(len(name_indx)):
 
 #print(card_indx)
 
-def IntTo4Hex(num: int) -> List[int]:
-    res = []
-    for _ in range(4):
-        res.append(num % 256)
-        num //= 256
-    return res
-
-
 card_indx_merge = []
 for item in card_indx:
     card_indx_merge.extend(IntTo4Hex(item))
 
 print('Finished calculating index.')
 
-# 5. Find crypto key
+# 5. Get crypto key
 
-if FileCheck('!CryptoKey.txt') == 1:
-	print('Trying to read crypto key from file...')
-	with open('!CryptoKey.txt', 'rt') as f_CryptoKey:		
-			m_iCryptoKey = int(f_CryptoKey.read(),16)			
-	f_CryptoKey.close()	
-	print('Read crypto key "' + hex(m_iCryptoKey) + '" from file, checking if it is correct...')
-else:
-	m_iCryptoKey = 0x0
-
-if CheckCryptoKey(m_iCryptoKey) == 1:
-	print('The crypto key "' + hex(m_iCryptoKey) + '" is correct.')
-else:
-	m_iCryptoKey = FindCryptoKey()
+m_iCryptoKey = GetCryptoKey(CARD_Indx_filename)
 
 # 6. Direct encryption
 
 print('Encrypting files...')
 
-file_names = [CARD_Name_filename, CARD_Desc_filename, CARD_Indx_filename]
-
-def Encrypt(output_name, b: bytes):
-
-    data = bytearray(zlib.compress(b))
-
-    for i in range(len(data)):
-        v = i + m_iCryptoKey + 0x23D
-        v *= m_iCryptoKey
-        v ^= i % 7
-        data[i] ^= v & 0xFF
-
-    with open(output_name, "wb") as f:
-        f.write((data))
-    f.close()
-
-Encrypt(CARD_Name_filename,
-        bytes(merge_string["name"], encoding='utf-8'))
-Encrypt(CARD_Desc_filename,
-        bytes(merge_string["desc"], encoding='utf-8'))
-Encrypt(CARD_Indx_filename, bytes(card_indx_merge))
+Encrypt(CARD_Name_filename, bytes(merge_string["name"], encoding='utf-8'), m_iCryptoKey)
+Encrypt(CARD_Desc_filename, bytes(merge_string["desc"], encoding='utf-8'), m_iCryptoKey)
+Encrypt(CARD_Indx_filename, bytes(card_indx_merge), m_iCryptoKey)
 
 print('Finished encrypting files.')

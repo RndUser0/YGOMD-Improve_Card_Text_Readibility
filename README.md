@@ -42,8 +42,9 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
 
 ### Preparation
-1. Copy the above Unity files into a new folder.
-2. Copy all files from this repository into the same folder, except maybe **README.md** which is the document you are reading right now.
+1. Click on the green **Code** button in the top right and then on **Download ZIP**.
+2. Extract the ZIP file you've just dowloaded into a new folder.
+3. Copy the above Unity files into the same folder as the Python files.
 
 ### Extracting the CARD_* files from the Unity files
 1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.

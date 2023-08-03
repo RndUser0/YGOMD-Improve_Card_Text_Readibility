@@ -8,8 +8,10 @@ from _defs import *
 #1. Check which Replace Guide text file to use:
 if FileCheck('Replace Guide.txt') == 1:
 	RG_filename='Replace Guide.txt'
+	print('Using file "Replace Guide.txt".')
 elif FileCheck('Replace_Guide.txt') == 1:
 	RG_filename='Replace_Guide.txt'
+	print('Using file "Replace_Guide.txt".')
 else:
 	print('Replace guide text file not found. The file name must be \"Replace Guide.txt\" or \"Replace_Guide.txt\".\nPress <ENTER> to exit.')
 	input()
@@ -23,7 +25,8 @@ CARD_Desc_filename = ''
 for i in filenames_to_check:
 	check_counter += 1
 	if FileCheck(i) == 1 and i.find('CARD_Desc') != -1 and CARD_Desc_filename == '':
-		CARD_Desc_filename = i	
+		CARD_Desc_filename = i
+		print('Using file "' + CARD_Desc_filename + '".')
 	if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
 		print('CARD_Desc file not found. The file name must be \"CARD_Desc.dec.json\", \"CARD_Desc.bytes.dec.json\" or \"CARD_Desc.txt.dec.json\".\nPress <ENTER> to exit.')
 		input()
@@ -65,6 +68,7 @@ for i in range(0,len(RG_list)-1,2):
 with open(CARD_Desc_filename, 'wt', encoding="utf8") as f_CARD_Desc:
 	f_CARD_Desc.write(CARD_Desc_content)
 	f_CARD_Desc.close()
+	print('Replacements completed.')
 
 '''
 print("Press <ENTER> to continue")

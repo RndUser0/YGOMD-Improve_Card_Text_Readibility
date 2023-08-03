@@ -1,25 +1,15 @@
 '''
 Credit:
-- timelic from NexusMods: https://forums.nexusmods.com/index.php?/user/145588218-timelic
-
-Original source:
-https://bitbucket.org/timel/master-duel-chinese-translation-patch/src/master/%E5%8D%A1%E7%89%87CARD/c_CARD%E5%8E%8B%E7%BC%A9.py
+timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 '''
 
 from typing import List
 import json
 import sys
 import zlib
+from _CARD_decrypt_and_split import FileCheck, Decrypt, CheckCryptoKey
 
 #1. Check if CARD_* files exist:
-
-def FileCheck(filename):
-    try:
-      open(filename, 'r')
-      return 1
-    except IOError:
-      # print 'Error: File does not appear to exist.'
-      return 0
 
 filenames_to_check = ['CARD_Indx', 'CARD_Indx.bytes', 'CARD_Indx.txt', 'CARD_Desc', 'CARD_Desc.bytes', 'CARD_Desc.txt', 'CARD_Name', 'CARD_Name.bytes', 'CARD_Name.txt']
 check_counter = -1
@@ -55,14 +45,14 @@ def ReadJSON(json_file_path: str) -> list or dict:
         dic: list = json.load(f)
     return dic
 	
-def getStringLen(s: str):
+def GetStringLen(s: str):
     return len(s.encode('utf-8'))
     res = 0
     for c in s:
         res += getCharLen(c)
     return res
 	
-def solve_P_desc(desc):
+def Solve_P_desc(desc):
 	
     res = ""
     res += monster_effect
@@ -97,13 +87,13 @@ for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English
     name = CARD_Name_json[i]
     desc = CARD_Desc_json[i]
 
-    def helper(sentence: str, indx: List[int], name_or_desc: str,
+    def Helper(sentence: str, indx: List[int], name_or_desc: str,
                merge_string: dict):
         #    Cancel here first, but it shouldn't be a problem here.
         # Convert Chinese pendulum monster effects to Japanese format
         # if sentence.startswith('←'):
-        #     sentence = solve_P_desc(sentence)
-        length = getStringLen(sentence)
+        #     sentence = Solve_P_desc(sentence)
+        length = GetStringLen(sentence)
         if i == 0:
             length += 8
         space_len = 4 - length % 4  # It means getting the remainder
@@ -113,8 +103,8 @@ for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English
         else:
             merge_string["desc"] += sentence + '\u0000' * space_len
 
-    helper(name, name_indx, "name", merge_string)
-    helper(desc, desc_indx, "desc", merge_string)
+    Helper(name, name_indx, "name", merge_string)
+    Helper(desc, desc_indx, "desc", merge_string)
 
 print('Finished merging files.\nCalculating index...')
 
@@ -136,7 +126,7 @@ for i in range(len(name_indx)):
 
 #print(card_indx)
 
-def intTo4Hex(num: int) -> List[int]:
+def IntTo4Hex(num: int) -> List[int]:
     res = []
     for _ in range(4):
         res.append(num % 256)
@@ -146,31 +136,11 @@ def intTo4Hex(num: int) -> List[int]:
 
 card_indx_merge = []
 for item in card_indx:
-    card_indx_merge.extend(intTo4Hex(item))
+    card_indx_merge.extend(IntTo4Hex(item))
 
 print('Finished calculating index.')
 
 # 5. Find crypto key
-
-def Decrypt(filename):
-    with open(f'{filename}', "rb") as f:
-        data = bytearray(f.read())
-
-    for i in range(len(data)):
-        v = i + m_iCryptoKey + 0x23D
-        v *= m_iCryptoKey
-        v ^= i % 7
-        data[i] ^= v & 0xFF
-
-    with open(f'{filename}' + ".dec", "wb") as f:
-        f.write(zlib.decompress(data))
-
-def CheckCryptoKey():	
-	try:
-		Decrypt(CARD_Indx_filename)
-		return 1
-	except zlib.error:	
-		return 0
 
 if FileCheck('!CryptoKey.txt') == 1:
 	print('Trying to read crypto key from file...')
@@ -181,21 +151,10 @@ if FileCheck('!CryptoKey.txt') == 1:
 else:
 	m_iCryptoKey = 0x0
 
-if CheckCryptoKey() == 1:
+if CheckCryptoKey(m_iCryptoKey) == 1:
 	print('The crypto key "' + hex(m_iCryptoKey) + '" is correct.')
 else:
-	print('No correct crypto key found. Searching for crypto key...')
-	m_iCryptoKey = 0x0	
-	while True:
-		try:
-			Decrypt(CARD_Indx_filename)			
-			break
-		except zlib.error:			
-			m_iCryptoKey = m_iCryptoKey + 1			
-	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
-		f_CryptoKey.write(hex(m_iCryptoKey))
-	f_CryptoKey.close()
-	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
+	m_iCryptoKey = FindCryptoKey()
 
 # 6. Direct encryption
 
@@ -203,7 +162,7 @@ print('Encrypting files...')
 
 file_names = [CARD_Name_filename, CARD_Desc_filename, CARD_Indx_filename]
 
-def encrypt(output_name, b: bytes):
+def Encrypt(output_name, b: bytes):
 
     data = bytearray(zlib.compress(b))
 
@@ -217,10 +176,10 @@ def encrypt(output_name, b: bytes):
         f.write((data))
     f.close()
 
-encrypt(CARD_Name_filename,
+Encrypt(CARD_Name_filename,
         bytes(merge_string["name"], encoding='utf-8'))
-encrypt(CARD_Desc_filename,
+Encrypt(CARD_Desc_filename,
         bytes(merge_string["desc"], encoding='utf-8'))
-encrypt(CARD_Indx_filename, bytes(card_indx_merge))
+Encrypt(CARD_Indx_filename, bytes(card_indx_merge))
 
 print('Finished encrypting files.')

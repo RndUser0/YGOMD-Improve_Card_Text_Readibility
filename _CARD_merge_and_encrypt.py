@@ -23,7 +23,7 @@ print('Reading files...')
 CARD_Name_json: list = ReadJSON(CARD_Name_filename + ".dec.json")
 CARD_Desc_json: list = ReadJSON(CARD_Desc_filename + ".dec.json")
 
-print('Finished reading files...')
+print('Finished reading files.')
 
 #3. Merge JSON files
 

@@ -26,12 +26,14 @@ m_iCryptoKey = GetCryptoKey(CARD_Indx_filename)
 
 print('Decrypting files...')
 
-for name in CARD_filenames:
-	if FileCheck(name) == 1:
-		Decrypt(name, m_iCryptoKey)
-		print('Decrypted file "' + name + '".')	
+for filename in CARD_filenames:
+	if FileCheck(filename) == 1:
+		data = ReadByteData(filename)
+		data = Decrypt(data, m_iCryptoKey)
+		WriteDecData(filename, data)
+		print('Decrypted file "' + filename + '".')	
 	else:
-		print("Could not decrypt file " + name + " because it does not appear to exist.")
+		print("Could not decrypt file " + filename + " because it does not appear to exist.")
 
 # 4. Split CARD_Name + CARD_Desc
 

@@ -1,15 +1,9 @@
 # python3
 import fileinput
+import os
 import re
 import sys
-
-def FileCheck(fn):
-    try:
-      open(fn, 'r')
-      return 1
-    except IOError:
-      # print 'Error: File does not appear to exist.'
-      return 0
+from _CARD_decrypt_and_split import FileCheck
 
 #1. Check which Replace Guide text file to use:
 if FileCheck('Replace Guide.txt') == 1:

@@ -10,58 +10,63 @@ import json
 import sys
 import zlib
 
-#Decrypt and split
+#[Decrypt and split]
 
 def FileCheck(filename):
-    try:
-      open(filename, 'r')
-      return 1
-    except IOError:
-      # print 'Error: File does not appear to exist.'
-      return 0
-
-def Decrypt(filename, m_iCryptoKey):
-    with open(f'{filename}', "rb") as f:
-        data = bytearray(f.read())
-
-    for i in range(len(data)):
-        v = i + m_iCryptoKey + 0x23D
-        v *= m_iCryptoKey
-        v ^= i % 7
-        data[i] ^= v & 0xFF
-
-    with open(f'{filename}' + ".dec", "wb") as f:
-        f.write(zlib.decompress(data))
-
-def CheckCryptoKey(CARD_Indx_filename, m_iCryptoKey):
 	try:
-		Decrypt(CARD_Indx_filename, m_iCryptoKey)
+		open(filename, 'r')
 		return 1
-	except zlib.error:	
+	except IOError:
+	#print 'Error: File does not appear to exist.'
 		return 0
+
+def Decrypt(data, m_iCryptoKey):	
+	try:
+		for i in range(len(data)):
+			v = i + m_iCryptoKey + 0x23D
+			v *= m_iCryptoKey
+			v ^= i % 7
+			data[i] ^= v & 0xFF			
+		return zlib.decompress(data)		
+	except zlib.error:
+		#print('zlib.error because of wrong crypo key:' + hex(m_iCryptoKey))		
+		return bytearray()
+	#except Exception:
+	#else:
+
+def ReadByteData(filename):
+	with open(f'{filename}', "rb") as f:
+		data = bytearray(f.read())	
+	return data
+
+def WriteDecData(filename, data):
+	with open(f'{filename}' + ".dec", "wb") as f:
+		f.write(data)
+
+def CheckCryptoKey(filename, m_iCryptoKey):	
+	data = ReadByteData(filename)	
+	if Decrypt(data, m_iCryptoKey) == bytearray():
+		return 0
+	else:
+		return 1
 		
-def FindCryptoKey():
-	print('No correct crypto key found. Searching for crypto key...')
-	m_iCryptoKey = 0x0	
-	while True:
-		try:
-			Decrypt(CARD_Indx_filename, m_iCryptoKey)
-			#if os.stat('CARD_Indx.dec').st_size > 0:
-			break
-		except zlib.error:
-			#print('Wrong crypto key:', hex(m_iCryptoKey), ' (zlib error)')
-			m_iCryptoKey = m_iCryptoKey + 1
-		#except Exception:
-			#print('Unexpected {err=}, {type(err)=}')
-		#else:	
+def FindCryptoKey(filename):
+	print('No correct crypto key found. Searching for crypto key...')	
+	m_iCryptoKey = -0x1	
+	enc_data = ReadByteData(filename)	
+	dec_data = bytearray()	
+	while dec_data == bytearray():			
+			m_iCryptoKey = m_iCryptoKey + 1			
+			data = bytearray(enc_data)
+			dec_data = Decrypt(data, m_iCryptoKey)
+			#if os.stat('CARD_Indx.dec').st_size > 0:						
 	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
 		f_CryptoKey.write(hex(m_iCryptoKey))
 	f_CryptoKey.close()
-	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')
-	
+	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')	
 	return m_iCryptoKey
 
-def GetCryptoKey(CARD_Indx_filename):
+def GetCryptoKey(filename):
 	if FileCheck('!CryptoKey.txt') == 1:
 		print('Trying to read crypto key from file...')
 		with open('!CryptoKey.txt', 'rt') as f_CryptoKey:		
@@ -71,11 +76,10 @@ def GetCryptoKey(CARD_Indx_filename):
 	else:
 		m_iCryptoKey = 0x0
 
-	if CheckCryptoKey(CARD_Indx_filename, m_iCryptoKey) == 1:
+	if CheckCryptoKey(filename, m_iCryptoKey) == 1:
 		print('The crypto key "' + hex(m_iCryptoKey) + '" is correct.')
 	else:
-		m_iCryptoKey = FindCryptoKey()
-	
+		m_iCryptoKey = FindCryptoKey(filename)	
 	return m_iCryptoKey
 
 def Check_CARD_files():
@@ -106,7 +110,6 @@ def Check_CARD_files():
 			print('CARD_Name file not found. The file name must be \"CARD_Name\", \"CARD_Name.bytes\" or \"CARD_Name.txt\".\nPress <ENTER> to exit.')
 			input()
 			sys.exit()
-
 	return [CARD_Indx_filename,CARD_Desc_filename,CARD_Name_filename]
 	
 def WriteJSON(l: list, json_file_path: str):
@@ -130,18 +133,18 @@ def ProgressiveProcessing(CARD_Indx_filename, filename, start):
             tmp.append(dec_list[i + j])
         indx.append(tmp)
 
-    def fourToOne(x: List[int]) -> int:
+    def FourToOne(x: List[int]) -> int:
         res = 0
         for i in range(3, -1, -1):
             res *= 16 * 16
             res += x[i]
         return res
 
-    indx = [fourToOne(i) for i in indx]
+    indx = [FourToOne(i) for i in indx]
     indx = indx[1:]
     	
     # Convert Decrypted CARD files to JSON files    
-    def solve(data: bytes, desc_indx: List[int]):
+    def Solve(data: bytes, desc_indx: List[int]):
         res = []
         for i in range(len(desc_indx) - 1):
             s = data[desc_indx[i]:desc_indx[i + 1]]
@@ -155,11 +158,11 @@ def ProgressiveProcessing(CARD_Indx_filename, filename, start):
     with open(f"{filename}" + ".dec", 'rb') as f:
         data = f.read()
 
-    desc = solve(data, indx)
+    desc = Solve(data, indx)
 	
     WriteJSON(desc, f"{filename}" + ".dec.json")
 	
-#Merge and encrypt
+#[Merge and encrypt]
 
 def ReadJSON(json_file_path: str) -> list or dict:
     with open(json_file_path, 'r', encoding='utf8') as f:
@@ -181,7 +184,6 @@ def Solve_P_desc(desc):
         res += separator
         res += '\n'
         res += p_effect
-
     return res
 
 def IntTo4Hex(num: int) -> List[int]:

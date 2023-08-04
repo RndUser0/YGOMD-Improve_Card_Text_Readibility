@@ -94,8 +94,8 @@ m_iCryptoKey = GetCryptoKey(CARD_Indx_filename)
 
 print('Encrypting files...')
 
-Encrypt(CARD_Name_filename, bytes(merge_string["name"], encoding='utf-8'), m_iCryptoKey)
-Encrypt(CARD_Desc_filename, bytes(merge_string["desc"], encoding='utf-8'), m_iCryptoKey)
-Encrypt(CARD_Indx_filename, bytes(card_indx_merge), m_iCryptoKey)
+Encrypt(bytes(merge_string["name"], encoding='utf-8'), m_iCryptoKey, CARD_Name_filename)
+Encrypt(bytes(merge_string["desc"], encoding='utf-8'), m_iCryptoKey, CARD_Desc_filename)
+Encrypt(bytes(card_indx_merge), m_iCryptoKey, CARD_Indx_filename)
 
 print('Finished encrypting files.')

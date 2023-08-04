@@ -1,6 +1,7 @@
 '''
 Credits:
 akintos: https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b
+crazydoomy: https://github.com/crazydoomy
 timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 '''
 
@@ -21,6 +22,7 @@ def FileCheck(filename):
 		return 0
 
 def Decrypt(data, m_iCryptoKey):	
+	data = bytearray(data)
 	try:
 		for i in range(len(data)):
 			v = i + m_iCryptoKey + 0x23D
@@ -34,9 +36,16 @@ def Decrypt(data, m_iCryptoKey):
 	#except Exception:
 	#else:
 
+'''
 def ReadByteData(filename):
 	with open(f'{filename}', "rb") as f:
 		data = bytearray(f.read())	
+	return data
+'''
+
+def ReadData(filename):
+	with open(f'{filename}', "rb") as f:
+		data = f.read()
 	return data
 
 def WriteDecData(filename, data):
@@ -44,7 +53,7 @@ def WriteDecData(filename, data):
 		f.write(data)
 
 def CheckCryptoKey(filename, m_iCryptoKey):	
-	data = ReadByteData(filename)	
+	data = ReadData(filename)	
 	if Decrypt(data, m_iCryptoKey) == bytearray():
 		return 0
 	else:
@@ -53,11 +62,10 @@ def CheckCryptoKey(filename, m_iCryptoKey):
 def FindCryptoKey(filename):
 	print('No correct crypto key found. Searching for crypto key...')	
 	m_iCryptoKey = -0x1	
-	enc_data = ReadByteData(filename)	
+	data = ReadData(filename)	
 	dec_data = bytearray()	
 	while dec_data == bytearray():			
-			m_iCryptoKey = m_iCryptoKey + 1			
-			data = bytearray(enc_data)
+			m_iCryptoKey = m_iCryptoKey + 1				
 			dec_data = Decrypt(data, m_iCryptoKey)
 			#if os.stat('CARD_Indx.dec').st_size > 0:						
 	with open('!CryptoKey.txt', 'w') as f_CryptoKey:

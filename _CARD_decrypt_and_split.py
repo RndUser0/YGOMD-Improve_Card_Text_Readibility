@@ -28,7 +28,7 @@ print('Decrypting files...')
 
 for filename in CARD_filenames:
 	if FileCheck(filename) == 1:
-		data = ReadByteData(filename)
+		data = ReadData(filename)
 		data = Decrypt(data, m_iCryptoKey)
 		WriteDecData(filename, data)
 		print('Decrypted file "' + filename + '".')	

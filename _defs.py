@@ -21,7 +21,7 @@ def FileCheck(filename):
 	#print 'Error: File does not appear to exist.'
 		return 0
 
-def Decrypt(data, m_iCryptoKey):	
+def Decrypt(data: bytes, m_iCryptoKey):	
 	data = bytearray(data)
 	try:
 		for i in range(len(data)):
@@ -35,13 +35,6 @@ def Decrypt(data, m_iCryptoKey):
 		return bytearray()
 	#except Exception:
 	#else:
-
-'''
-def ReadByteData(filename):
-	with open(f'{filename}', "rb") as f:
-		data = bytearray(f.read())	
-	return data
-'''
 
 def ReadData(filename):
 	with open(f'{filename}', "rb") as f:
@@ -201,8 +194,8 @@ def IntTo4Hex(num: int) -> List[int]:
         num //= 256
     return res
 
-def Encrypt(output_name, b: bytes, m_iCryptoKey):
-    data = bytearray(zlib.compress(b))
+def Encrypt(data: bytes, m_iCryptoKey, output_filename):
+    data = bytearray(zlib.compress(data))
 
     for i in range(len(data)):
         v = i + m_iCryptoKey + 0x23D
@@ -210,6 +203,6 @@ def Encrypt(output_name, b: bytes, m_iCryptoKey):
         v ^= i % 7
         data[i] ^= v & 0xFF
 
-    with open(output_name, "wb") as f:
+    with open(output_filename, "wb") as f:
         f.write((data))
     f.close()

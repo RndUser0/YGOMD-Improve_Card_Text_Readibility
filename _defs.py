@@ -7,7 +7,8 @@ timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 
 from typing import List
 import json
-#import os
+import os
+import re
 import sys
 import zlib
 
@@ -36,17 +37,29 @@ def Decrypt(data: bytes, m_iCryptoKey):
 	#except Exception:
 	#else:
 
-def ReadData(filename):
+def ReadByteData(filename):
 	with open(f'{filename}', "rb") as f:
 		data = f.read()
+	f.close()
 	return data
 
-def WriteDecData(filename, data):
+def WriteByteData(filename, data):
+	with open(f'{filename}', "wb") as f:
+		f.write(data)
+	f.close()
+
+def WriteDecByteData(filename, data):
 	with open(f'{filename}' + ".dec", "wb") as f:
 		f.write(data)
+	f.close()
+
+def WriteUTF8Data(filename, data):
+	with open(f'{filename}', "wt", encoding="utf8") as f:
+		f.write(data)
+	f.close()
 
 def CheckCryptoKey(filename, m_iCryptoKey):	
-	data = ReadData(filename)	
+	data = ReadByteData(filename)	
 	if Decrypt(data, m_iCryptoKey) == bytearray():
 		return 0
 	else:
@@ -55,7 +68,7 @@ def CheckCryptoKey(filename, m_iCryptoKey):
 def FindCryptoKey(filename):
 	print('No correct crypto key found. Searching for crypto key...')	
 	m_iCryptoKey = -0x1	
-	data = ReadData(filename)	
+	data = ReadByteData(filename)	
 	dec_data = bytearray()	
 	while dec_data == bytearray():			
 			m_iCryptoKey = m_iCryptoKey + 1				
@@ -83,35 +96,59 @@ def GetCryptoKey(filename):
 		m_iCryptoKey = FindCryptoKey(filename)	
 	return m_iCryptoKey
 
-def Check_CARD_files():
-	filenames_to_check = ['CARD_Indx', 'CARD_Indx.bytes', 'CARD_Indx.txt', 'CARD_Desc', 'CARD_Desc.bytes', 'CARD_Desc.txt', 'CARD_Name', 'CARD_Name.bytes', 'CARD_Name.txt']
-	check_counter = -1
+def Check_files(Filename_list):
+	Checked_filename_list = []
+	File_found_list = []
 	
-	CARD_Indx_filename = ''
-	CARD_Desc_filename = ''
-	CARD_Name_filename = ''
+	for i in range(len(Filename_list)):
+		Filename = Filename_list[i]
+		
+		if Filename.find('.') == -1: #if no dot found in filename			
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename + '.bytes') == 1				:
+				Checked_filename_list.append(Filename + '.bytes')
+			elif FileCheck(Filename + '.txt') == 1:
+				Checked_filename_list.append(Filename + '.txt')			
+		
+		if Filename.find('.dec') ==  len(Filename) - 4: #if ".dec" found at the end of filename
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename.replace('.dec', '.bytes.dec')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec', '.bytes.dec'))
+			elif FileCheck(Filename.replace('.dec', '.txt.dec')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec', '.txt.dec'))
 
-	for i in filenames_to_check:
-		check_counter += 1		
-		if FileCheck(i) == 1 and i.find('CARD_Indx') != -1 and CARD_Indx_filename == '':
-			CARD_Indx_filename = i
-		if FileCheck(i) == 1 and i.find('CARD_Desc') != -1 and CARD_Desc_filename == '':
-			CARD_Desc_filename = i
-		if FileCheck(i) == 1 and i.find('CARD_Name') != -1 and CARD_Name_filename == '':
-			CARD_Name_filename = i
-		if check_counter == len(filenames_to_check)-1 and CARD_Indx_filename == '':
-			print('CARD_Indx file not found. The file name must be \"CARD_Indx\", \"CARD_Indx.bytes\" or \"CARD_Indx.txt\".\nPress <ENTER> to exit.')
+		if Filename.find('.dec.json') ==  len(Filename) - 9: #if ".dec.json" found at the end of filename									
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)				
+			if FileCheck(Filename.replace('.dec.json', '.bytes.dec.json')) == 1:				
+				Checked_filename_list.append(Filename.replace('.dec.json', '.bytes.dec.json'))				
+			if FileCheck(Filename.replace('.dec.json', '.txt.dec.json')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec.json', '.txt.dec.json'))
+		
+		if Filename.find('Replace Guide.txt') !=  -1: #if "Replace Guide.txt" found in filename
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename.replace(' ', '_')) == 1:
+				Checked_filename_list.append(Filename.replace(' ', '_'))
+	
+		if len(Checked_filename_list) == i + 1:
+			File_found_list.append(True)
+		else:
+			File_found_list.append(False)
+		
+	for i in range(len(Checked_filename_list)):
+		Filename = Filename_list[i]
+		Checked_filename = Checked_filename_list[i]
+		File_found = File_found_list[i]
+		
+		if  File_found == False:
+			print('"' + Filename + '" file not found.\nPress <ENTER> to exit.')
 			input()
 			sys.exit()
-		if check_counter == len(filenames_to_check)-1 and CARD_Desc_filename == '':
-			print('CARD_Desc file not found. The file name must be \"CARD_Desc\", \"CARD_Desc.bytes\" or \"CARD_Desc.txt\".\nPress <ENTER> to exit.')
-			input()
-			sys.exit()
-		if check_counter == len(filenames_to_check)-1 and CARD_Name_filename == '':
-			print('CARD_Name file not found. The file name must be \"CARD_Name\", \"CARD_Name.bytes\" or \"CARD_Name.txt\".\nPress <ENTER> to exit.')
-			input()
-			sys.exit()
-	return [CARD_Indx_filename,CARD_Desc_filename,CARD_Name_filename]
+			
+	return Checked_filename_list
 	
 def WriteJSON(l: list, json_file_path: str):
     with open(json_file_path, 'w', encoding='utf8') as f:
@@ -206,3 +243,73 @@ def Encrypt(data: bytes, m_iCryptoKey, output_filename):
     with open(output_filename, "wb") as f:
         f.write((data))
     f.close()
+
+def CountFileLines(filename):
+	with open(filename, 'rt', encoding="utf8") as f:
+		for count, line in enumerate(f):
+			pass
+	f.close()
+	return count + 1
+
+def Dec2Hex(decimal):
+	conversion_table = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4',
+						5: '5', 6: '6', 7: '7',
+						8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C',
+						13: 'D', 14: 'E', 15: 'F'}
+	if decimal == 0:
+		hexadecimal = '0'
+	else:
+		hexadecimal = ''	
+		while(decimal > 0):
+			remainder = decimal % 16
+			hexadecimal = conversion_table[remainder] + hexadecimal
+			decimal = decimal // 16
+	
+	if len(hexadecimal) % 2 != 0:
+		hexadecimal = '0' + hexadecimal
+	
+	return hexadecimal
+
+def Find_all_in_str(str, substr):
+	index_list = []
+	StrPos = 0 #String position
+	TempStrPos = 0
+	StrLen = len(str)
+	while StrPos < StrLen:
+		TempStrPos = str[StrPos:StrLen].find(substr)
+		if TempStrPos != -1:			
+			StrPos = StrPos + TempStrPos
+			index_list.append(StrPos)
+			index_list.append(StrPos + len(substr) - 1)
+			StrPos = StrPos + len(substr)
+		else:
+			break
+	return index_list
+
+def Find_all_RE_in_str(str, RegEx_substr):
+	iteration = re.finditer(RegEx_substr, str)
+	index_list = []
+	for match in iteration:		
+		index_list.append(match.start())
+		index_list.append(match.end())
+	#index_list = [(match.start(), match.end()) for match in iteration]		
+	return index_list
+
+def Replace_in_str(str, replacement_list):
+	#Example: replacement_list = [('a', 'b'), ('c', 'd')]
+	for char, replacement in replacement_list:
+		if char in str:
+			str = str.replace(char, replacement)
+	return str
+
+def WriteEffects(filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list):
+	with open(f'{filename}', "wt", encoding="utf8") as f:		
+		for CARD_Desc_list_i in range(len(CARD_Desc_list)):			
+			Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i] + Pendulum_Effects_Qty_list[CARD_Desc_list_i]
+			for i in range(Effects_Qty):
+				Effect_ID = First_Effect_ID_list[CARD_Desc_list_i] + i
+				Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
+				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
+				Effect_End_Offset = Effect_End_Offset_list[Effect_ID]
+				f.write(Card_Desc[Effect_Start_Offset:Effect_End_Offset] + '\n')
+	f.close()

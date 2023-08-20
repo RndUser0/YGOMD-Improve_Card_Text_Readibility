@@ -59,7 +59,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 7. Run the file **_CARD_decrypt_and_split.py** to decrypt all 5 **Card_\*** files and split the **CARD_Name** and **CARD_Desc** files to JSON.
 
 ### Replacing the card text and reconverting the Card_* files 
-1. Run the file **_CARD_Desc_replace.py** to replace the card text and modify the *Card_Part* file.
+1. Run the file **_CARD_Desc_replace.py** to replace the card text and modify the decrypted **Card_Part** file.
 2. Run the file **_CARD_merge+encrypt.py** to reconvert and reencrypt the files, so the game can read them.
 
 ### Importing the modified Card_* files back into the Unity files.

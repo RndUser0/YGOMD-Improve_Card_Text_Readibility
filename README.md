@@ -1,9 +1,7 @@
 # Yu-Gi-Oh! Master Duel - Improve Card Text Readibility mod
-
-## Description
 This mod adds line breaks to card effect text to separate multiple effects from each other:
 
-![YGOMD-Improve_Card_Text_Readibility mod - preview (2023-07-24)](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/402eccc0-a494-487b-9a0f-c0afc24daf17)
+![Starving Venemy Lethal Dose Dragon](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/9778656f-06bd-4e0c-871e-46da2ca5e6bf)
 
 ## Installing the mod from the Releases page
 ### Introduction
@@ -36,18 +34,20 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * [AssetStudio](https://github.com/Perfare/AssetStudio/releases) - Tool for extracting Unity assets
 * [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for importing a modded file back into a game file
 
-### Location of the Unity files which contain the English CARD_* files used by the game:
+### Location of the Unity files which contain the English Card_* files used by the game:
 * CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ab\abda12b1
 * CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\da\da0368f7
 * CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
+* Card_Part: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\d8\d80790df
+* Card_Pidx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\c3\c33a389b
 
 ### Preparation
 1. Click on the green **Code** button in the top right and then on **Download ZIP**.
 2. Extract the ZIP file you've just dowloaded into a new folder.
 3. Copy the above Unity files into the same folder as the Python files.
 
-### Extracting the CARD_* files from the Unity files
-1. Load all 3 CARD_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
+### Extracting the Card_* files from the Unity files
+1. Load all 3 Card_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.
 4. Select the 3 files, then right-click one of them.
@@ -62,7 +62,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 1. Run the file **_CARD_Desc_replace.py** to replace the card text.
 2. Run the file **_CARD_merge+encrypt.py** to reconvert and reencrypt the files, so the game can read them.
 
-### Importing the modified CARD_* files back into the Unity files.
+### Importing the modified Card_* files back into the Unity files.
 1. Create a backup of the original Unity file containing the **CARD_Desc** file .
 2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
 3. If the file you opened is compressed, a new window named **Message Box** will appear. Click on **Memory** there.
@@ -77,14 +77,10 @@ The mod contains only text files but to keep the risk of being warned or banned 
 9. Click on **File** → **Save** → **OK**.
 10. Close the **Assets Info** window.
 11. In the main **UABEA** window click on **File** → **Save**.
-12. Repeat steps 1 to 11 for the **CARD_Indx** file.
+12. Repeat steps 1 to 11 for the **CARD_Indx** and **Card_Part** files.
 
 ### Credits
 * [akintos](https://gist.github.com/akintos) for [the original decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
 * [crazydoomy](https://github.com/crazydoomy) for [the original encryption script](https://discord.com/channels/747402959117353022/938180052984659979/959192997667422228)
-* [thenobletheif](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for the RegEx replacement instructions, except the first one, and some regular instructions.
-* [timelic](https://github.com/timelic) for [the original split and merge scripts](https://github.com/timelic/master-duel-chinese-translation-switch)
-
-### Links
-* [My modding guide on NexusMods](https://www.nexusmods.com/yugiohmasterduel/articles/3)
+* [thenobletheif](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for the RegEx replacement instructions and some regular instructions.

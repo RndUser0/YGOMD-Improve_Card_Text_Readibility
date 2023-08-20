@@ -47,19 +47,19 @@ The mod contains only text files but to keep the risk of being warned or banned 
 3. Copy the above Unity files into the same folder as the Python files.
 
 ### Extracting the Card_* files from the Unity files
-1. Load all 3 Card_* files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
+1. Load all 5 **Card_\*** files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.
-4. Select the 3 files, then right-click one of them.
+4. Select the 5 files, then right-click one of them.
 
 ![AssetStudio_export](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/c0674e92-7949-45f8-a809-37b6fc3e0fc7)
 
 5. Select **Export selected assets**.
 6. Choose a location and click on **Select folder**.
-7. Run the file **_CARD_decrypt_and_split.py** to decrypt all 3 CARD_* files and split the **CARD_Name** and **CARD_Desc** files to JSON.
+7. Run the file **_CARD_decrypt_and_split.py** to decrypt all 5 **Card_\*** files and split the **CARD_Name** and **CARD_Desc** files to JSON.
 
-### Replacing the card text and reconverting the CARD_* files 
-1. Run the file **_CARD_Desc_replace.py** to replace the card text.
+### Replacing the card text and reconverting the Card_* files 
+1. Run the file **_CARD_Desc_replace.py** to replace the card text and modify the *Card_Part* file.
 2. Run the file **_CARD_merge+encrypt.py** to reconvert and reencrypt the files, so the game can read them.
 
 ### Importing the modified Card_* files back into the Unity files.

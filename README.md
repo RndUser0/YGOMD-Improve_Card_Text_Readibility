@@ -1,7 +1,7 @@
 # Yu-Gi-Oh! Master Duel - Improve Card Text Readibility mod
 This mod adds line breaks to card effect text to separate multiple effects from each other:
 
-![Starving Venemy Lethal Dose Dragon](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/9778656f-06bd-4e0c-871e-46da2ca5e6bf)
+![Supreme King Z-ARC](https://github.com/RndUser0/YGOMD-Improve_Card_Text_Readibility/assets/29837561/a5c789bb-3c58-4fe0-bc5c-1b176f83a0a3)
 
 ## Installing the mod from the Releases page
 ### Introduction

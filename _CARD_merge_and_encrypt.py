@@ -3,27 +3,31 @@ Credit:
 timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 '''
 
-from typing import List
-import json
-import sys
-import zlib
+#from typing import List
+#import json
+#import sys
+#import zlib
 from _defs import *
 
 #1. Check if CARD_* files exist:
 
-CARD_filenames = Check_CARD_files()
-CARD_Indx_filename = CARD_filenames[0]
-CARD_Desc_filename = CARD_filenames[1]
-CARD_Name_filename = CARD_filenames[2]
+CARD_filename_list = Check_files(['CARD_Indx', 'CARD_Name', 'CARD_Desc', 'Card_Pidx.dec', 'Card_Part.dec', 'CARD_Name.dec.json', 'CARD_Desc.dec.json'])
+CARD_Indx_filename = CARD_filename_list[0]
+CARD_Name_filename = CARD_filename_list[1]
+CARD_Desc_filename = CARD_filename_list[2]
+Card_Pidx_filename = CARD_filename_list[3]
+Card_Part_filename = CARD_filename_list[4]
+CARD_Name_JSON_filename = CARD_filename_list[5]
+CARD_Desc_JSON_filename = CARD_filename_list[6]
 
-#2. Read JSON files
+#2. Read JSON files into lists
 
-print('Reading files...')
+print('Reading JSON files into lists...')
 
-CARD_Name_json: list = ReadJSON(CARD_Name_filename + ".dec.json")
-CARD_Desc_json: list = ReadJSON(CARD_Desc_filename + ".dec.json")
+CARD_Name_JSON_list = ReadJSON(CARD_Name_JSON_filename)
+CARD_Desc_JSON_list = ReadJSON(CARD_Desc_JSON_filename)
 
-print('Finished reading files.')
+print('Completed.')
 
 #3. Merge JSON files
 
@@ -35,11 +39,11 @@ merge_string = {"name": "\u0000" * 8, "desc": "\u0000" * 8}
 name_indx = [0]
 desc_indx = [0]
 
-print('Merging files...')
+print('Merging JSON files...')
 
-for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English desc is one less than name
-    name = CARD_Name_json[i]
-    desc = CARD_Desc_json[i]
+for i in range(len(CARD_Name_JSON_list)):  # Here because of a strange bug in English desc is one less than name
+    name = CARD_Name_JSON_list[i]
+    desc = CARD_Desc_JSON_list[i]
 
     def Helper(sentence: str, indx: List[int], name_or_desc: str,
                merge_string: dict):
@@ -60,7 +64,7 @@ for i in range(len(CARD_Name_json)):  # Here because of a strange bug in English
     Helper(name, name_indx, "name", merge_string)
     Helper(desc, desc_indx, "desc", merge_string)
 
-print('Finished merging files.\nCalculating index...')
+print('Completed.\nCalculating CARD index...')
 
 #4. Calculate CARD index
 
@@ -84,7 +88,7 @@ card_indx_merge = []
 for item in card_indx:
     card_indx_merge.extend(IntTo4Hex(item))
 
-print('Finished calculating index.')
+print('Completed.')
 
 # 5. Get crypto key
 
@@ -98,4 +102,8 @@ Encrypt(bytes(merge_string["name"], encoding='utf-8'), m_iCryptoKey, CARD_Name_f
 Encrypt(bytes(merge_string["desc"], encoding='utf-8'), m_iCryptoKey, CARD_Desc_filename)
 Encrypt(bytes(card_indx_merge), m_iCryptoKey, CARD_Indx_filename)
 
-print('Finished encrypting files.')
+Card_Part_filename_content = ReadByteData(Card_Part_filename)
+Encrypted_Card_Part_filename = Card_Part_filename[0:len(Card_Part_filename)-4]
+Encrypt(Card_Part_filename_content, m_iCryptoKey, Encrypted_Card_Part_filename)
+
+print('Completed.')

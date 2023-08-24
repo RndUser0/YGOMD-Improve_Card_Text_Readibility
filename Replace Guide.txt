@@ -49,11 +49,20 @@ max.
 . (This card
 .\n\n(This card
 
+. (1 monster can only
+.\n\n(1 monster can only
+
+. (A monster can only
+.\n\n(A monster can only
+
 .)\n
 .)\n\n
 
 .) 
 .)\n\n
+
+.)\n\n●2
+.)\n●2
 
 ). (
 ).\n(
@@ -99,12 +108,6 @@ max.
 
 .\n\nOnly count
 .\nOnly count
-
-. (1 monster can only
-.\n\n(1 monster can only
-
-. (A monster can only
-.\n\n(A monster can only
 
 monster(s)\n\n
 monster(s) 

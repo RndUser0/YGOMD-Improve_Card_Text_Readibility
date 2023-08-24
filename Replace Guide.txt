@@ -55,6 +55,9 @@ max.
 .) 
 .)\n\n
 
+). (
+).\n(
+
 \n\nThen
 \nThen
 
@@ -84,6 +87,18 @@ max.
 
 \.\\n\\n(\(?Xyz Materials )
 \.\\n\1
+
+.\n\nIf the equipped monster
+.\nIf the equipped monster
+
+\n\nThey cannot
+\nThey cannot
+
+.\n\nYour choice
+.\nYour choice
+
+.\n\nOnly count
+.\nOnly count
 
 monster(s)\n\n
 monster(s) 

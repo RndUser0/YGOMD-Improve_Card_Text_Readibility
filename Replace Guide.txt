@@ -61,6 +61,9 @@ max.
 . (You can only
 .\n(You can only
 
+).\n(When Summoned
+).\n\n(When Summoned
+
 \n\nThen
 \nThen
 
@@ -91,17 +94,17 @@ max.
 \.\\n\\n(\(?Xyz Materials )
 \.\\n\1
 
-.\n\nIf the equipped monster
-.\nIf the equipped monster
-
-\n\nThey cannot
-\nThey cannot
-
 .\n\nYour choice
 .\nYour choice
 
 .\n\nOnly count
 .\nOnly count
+
+. (1 monster can only
+.\n\n(1 monster can only
+
+. (A monster can only
+.\n\n(A monster can only
 
 monster(s)\n\n
 monster(s) 

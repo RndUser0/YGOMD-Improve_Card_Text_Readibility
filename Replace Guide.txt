@@ -61,6 +61,9 @@ max.
 \n\nYou can only use this effect
 \nYou can only use this effect
 
+\n\nYou can only use the previous effect
+\nYou can only use the previous effect
+
 \n\nThis is a Quick
 \nThis is a Quick
 

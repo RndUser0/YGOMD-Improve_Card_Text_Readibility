@@ -88,3 +88,4 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
 * [crazydoomy](https://github.com/crazydoomy) for [the original encryption script](https://discord.com/channels/747402959117353022/938180052984659979/959192997667422228)
 * [thenobletheif](https://www.nexusmods.com/yugiohmasterduel/users/26473124) for the RegEx replacement instructions and some regular instructions.
+* [timelic](https://github.com/timelic) for [the JSON split and merge scripts](https://github.com/timelic/master-duel-chinese-translation-switch)

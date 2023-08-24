@@ -49,6 +49,9 @@ max.
 . (This card
 .\n\n(This card
 
+.)\n
+.)\n\n
+
 .) 
 .)\n\n
 
@@ -123,3 +126,6 @@ Jr.
 
 vs.\n\n
 vs. 
+
+\n\n\n
+\n\n

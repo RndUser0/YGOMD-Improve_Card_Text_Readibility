@@ -240,7 +240,7 @@ if Mod_Card_Part_file == 'y':
 # For testing (start)
 if Mod_Card_Part_file == 'y' and Write_card_effects == True:
 	Card_effects_filename = 'Test - card effects before replacement.txt'
-	print('Writing card effect list to file"' + Card_effects_filename + '"...')	
+	print('Writing card effect list to file "' + Card_effects_filename + '"...')	
 	WriteEffects(Card_effects_filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list)
 	print('Completed.')
 # For testing (end)

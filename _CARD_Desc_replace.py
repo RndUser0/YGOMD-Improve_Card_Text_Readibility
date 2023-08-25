@@ -4,7 +4,7 @@ import fileinput
 #import json
 import math
 #import os
-#import re
+#import regex
 #import sys
 from _defs import *
 
@@ -59,13 +59,15 @@ f_RG.close()
 print('Completed.')
 
 #Replace escaped characters with single custom characters because of card effect offsets
-Replacement_list = [(r'\n', 'ｎ'), (r'\"', '＂'), ('●', '●＿＿')]
+Replacement_list_regular = [(r'\n', 'ｎ'), (r'\"', '＂'), ('●', '●＿＿')]
+Replacement_list_RegEx_search = [(r'\\n', '[ｎ]'),(r'\\"', '[＂]')]
+Replacement_list_RegEx_replace = [(r'\\n', 'ｎ'),(r'\\"', '＂')]
 for i in range(len(RG_list)):	
 	if i % 2  == 0:
-		RG_list[i] = RG_list[i].replace(r'\\n', '[ｎ]')
+		RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_RegEx_search)
 	elif i % 2  == 1:
-		RG_list[i] = RG_list[i].replace(r'\\n', 'ｎ')
-	RG_list[i] = Replace_in_str(RG_list[i], Replacement_list)		
+		RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_RegEx_replace)
+	RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_regular)
 
 #5. Read Card_Pidx and Card_Part file into byte variables:
 

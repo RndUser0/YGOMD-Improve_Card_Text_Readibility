@@ -8,7 +8,7 @@ timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 from typing import List
 import json
 import os
-import re
+import regex
 import sys
 import zlib
 
@@ -287,7 +287,7 @@ def Find_all_in_str(str, substr):
 	return index_list
 
 def Find_all_RE_in_str(str, RegEx_substr):
-	iteration = re.finditer(RegEx_substr, str)
+	iteration = regex.finditer(RegEx_substr, str)
 	index_list = []
 	for match in iteration:		
 		index_list.append(match.start())

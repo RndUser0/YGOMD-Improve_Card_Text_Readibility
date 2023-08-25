@@ -169,7 +169,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 			if Mod_Card_Part_file == 'y':
 				Before_replacement_index_list = Find_all_RE_in_str(Card_Desc, RG_list[RG_list_i])
 			
-			CARD_Desc_list[CARD_Desc_list_i] = re.sub(RG_list[RG_list_i],  #RegEx replacement, search string
+			CARD_Desc_list[CARD_Desc_list_i] = regex.sub(RG_list[RG_list_i],  #RegEx replacement, search string
 													  RG_list[RG_list_i+1].replace('\.','.'), #Remove backslash before dot in RegEx replacement string
 													  CARD_Desc_list[CARD_Desc_list_i]) #Card desc to be replaced
 			if Mod_Card_Part_file == 'y':

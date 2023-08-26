@@ -26,7 +26,10 @@ max.\n\n
 max. 
 
 .\n\n(
-. (
+.\n(
+
+.\n(Quick Effect):
+.\n\n(Quick Effect):
 
 .\n\nIf you cannot,
 . If you cannot,
@@ -37,16 +40,13 @@ max.
 .\n\nThis effect
 .\nThis effect
 
-. (Quick Effect):
-.\n\n(Quick Effect):
-
-. (This card
+.\n(This card
 .\n\n(This card
 
-. (1 monster can only
+.\n(1 monster can only
 .\n\n(1 monster can only
 
-. (A monster can only
+.\n(A monster can only
 .\n\n(A monster can only
 
 .)\n
@@ -54,12 +54,6 @@ max.
 
 .) 
 .)\n\n
-
-). (
-).\n(
-
-. (You can only
-.\n(You can only
 
 ).\n(When Summoned
 ).\n\n(When Summoned

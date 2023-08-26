@@ -59,9 +59,10 @@ f_RG.close()
 print('Completed.')
 
 #Replace escaped characters with single custom characters because of card effect offsets
+RG_list_backup = RG_list #Make backup of RG_list
 Replacement_list_regular = [(r'\n', 'ｎ'), (r'\"', '＂'), ('●', '●＿＿')]
-Replacement_list_RegEx_search = [(r'\\n', '[ｎ]'),(r'\\"', '[＂]')]
-Replacement_list_RegEx_replace = [(r'\\n', 'ｎ'),(r'\\"', '＂')]
+Replacement_list_RegEx_search = [(r'\\n', 'ｎ'),(r'\\"', '＂'),(r'\(', '（'),(r'\)', '）')]
+Replacement_list_RegEx_replace = [(r'\\n', 'ｎ'),(r'\\"', '＂'),(r'\(', '（'),(r'\)', '）')]
 for i in range(len(RG_list)):	
 	if i % 2  == 0:
 		RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_RegEx_search)
@@ -157,7 +158,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 				First_Pendulum_Element_Offset = Card_Desc.find('[Pendulum Effect]')			
 		#####################
 		#Regular replacement:
-		if not any([x in RG_list[RG_list_i] for x in [r'\.','[ｎ]']]): #check if replacement instruction contains RegEx		
+		if not any([x in RG_list_backup[RG_list_i] for x in [r'\.',r'\\n']]): #check if replacement instruction contains RegEx		
 			if Mod_Card_Part_file == 'y':
 				Before_replacement_index_list = Find_all_in_str(Card_Desc, RG_list[RG_list_i])			
 				
@@ -178,10 +179,22 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 				Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
 				RE_Search_Instr = RG_list[RG_list_i] #Instr = Instruction
 				RE_Repl_Instr = RG_list[RG_list_i+1] #Repl = Replacement
-				Group_Ref_Start = RE_Search_Instr.find('(') #Ref = Reference
-				Group_Ref_End = RE_Search_Instr.find(')') + 1
-				RE_Repl_Instr_to_Search_Instr = Replace_in_str(RE_Repl_Instr, [(r'\1',RE_Search_Instr[Group_Ref_Start:Group_Ref_End]),('ｎ', '[ｎ]')])
-				After_replacement_index_list = Find_all_RE_in_str(Card_Desc, RE_Repl_Instr_to_Search_Instr)
+				Group_Ref_Start_list = Find_all_in_str(RE_Search_Instr, '(') #Ref = Reference
+				Group_Ref_End_list = Find_all_in_str(RE_Search_Instr, ')')
+				Group_1_Ref_Start = Group_Ref_Start_list[0]
+				Group_1_Ref_End = Group_Ref_End_list[0] + 1
+				if len(Group_Ref_Start_list) > 2:
+					Group_2_Ref_Start = Group_Ref_Start_list[2]
+				else:
+					Group_2_Ref_Start =  -1
+				if len(Group_Ref_End_list) > 2:
+					Group_2_Ref_End = Group_Ref_End_list[2] + 1
+				else:
+					Group_2_Ref_End =  -1
+				RE_Repl_Instr_to_Search_Instr = Replace_in_str(RE_Repl_Instr, [(r'\1',RE_Search_Instr[Group_1_Ref_Start:Group_1_Ref_End]),(r'\2',RE_Search_Instr[Group_2_Ref_Start:Group_2_Ref_End]),('ｎ', '[ｎ]')])
+				After_replacement_index_list = Find_all_RE_in_str(Card_Desc, RE_Repl_Instr_to_Search_Instr)				
+				#print("Press <ENTER> to continue")
+				#input()				
 		#####################
 		if Mod_Card_Part_file == 'y':	
 			for i in range(0,len(Before_replacement_index_list)-1,2):
@@ -249,6 +262,8 @@ if Mod_Card_Part_file == 'y' and Write_card_effects == True:
 
 #Replace temporary custom strings with original strings
 Replacement_list =  [(sub[1], sub[0]) for sub in Replacement_list] # Swap tuples in Replacement_list
+Replacement_list.append(tuple(('（','(')))
+Replacement_list.append(tuple(('）',')')))
 for i in range(len(CARD_Desc_list)):
 	CARD_Desc_list[i] = Replace_in_str(CARD_Desc_list[i], Replacement_list)
 

@@ -34,15 +34,6 @@ max.
 .\n(Quick Effect):
 .\n\n(Quick Effect):
 
-.\n\nIf you cannot,
-. If you cannot,
-
-.\n\nWhen you do this,
-. When you do this,
-
-.\n\nThis effect
-.\nThis effect
-
 .\n(This card
 .\n\n(This card
 
@@ -115,6 +106,15 @@ hand.\n\n●Attack
 \n\nThen
 \nThen
 
+.\n\nIf you cannot,
+.\nIf you cannot,
+
+.\n\nWhen you do this,
+.\nWhen you do this,
+
+.\n\nThis effect
+.\nThis effect
+
 \n\nThis is a Quick
 \nThis is a Quick
 
@@ -128,16 +128,28 @@ hand.\n\n●Attack
 .\nTransfer this card's material
 
 .\n\nOtherwise
-. Otherwise
+.\nOtherwise
 
 .\n\nIts
-. Its
+.\nIts
 
 .\n\nAttached
-. Attached
+.\nAttached
 
 \.\\n\\n(\(?Xyz Materials )
 \.\\n\1
+
+.\n\nWhile
+.\nWhile
+
+, also
+,\nalso
+
+, but
+,\nbut
+
+, then
+,\nthen
 
 .\n\nYour choice
 .\nYour choice

@@ -1,7 +1,10 @@
 . 
 .\n\n
 
-\.\\n\\n(This card[^.]*this effect[^.]*\.)
+\.\\n\\n(This card[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(You cannot[^.]*this effect[^.]*?\.)
 \.\\n\1
 
 \.\\n\\n(This card[^.]*this way[^.]*\.)
@@ -116,10 +119,13 @@ hand.\n\n●Attack
 \nThis is a Quick
 
 \n\n(Transfer its materials to this card.) 
- (Transfer its materials to this card.)\n\n
+\n(Transfer its materials to this card.)\n\n
  
 .\n\nTransfer its material
-. Transfer its material
+.\nTransfer its material
+
+.\n\nTransfer this card's material
+.\nTransfer this card's material
 
 .\n\nOtherwise
 . Otherwise

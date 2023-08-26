@@ -33,25 +33,25 @@ The mod contains only text files but to keep the risk of being warned or banned 
 11. Choose the option to overwrite/replace all files and let the process finish.
 
 ## Manual modding
-### Required tools for card text replacement
+### A. Required tools for card text replacement
 * [Python 3](https://www.python.org/downloads/)
 * [AssetStudio](https://github.com/Perfare/AssetStudio/releases) - Tool for extracting Unity assets
 * [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for importing a modded file back into a game file
 
-### Location of the Unity files which contain the English Card_* files used by the game:
+### B. Location of the Unity files which contain the English Card_* files used by the game:
 * CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ab\abda12b1
 * CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\da\da0368f7
 * CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
 * Card_Part: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\d8\d80790df
 * Card_Pidx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\c3\c33a389b
 
-### Preparation
+### C. Preparation
 1. Click on the green **Code** button in the top right and then on **Download ZIP**.
 2. Extract the ZIP file you've just dowloaded into a new folder.
 3. Copy the above Unity files into the same folder as the Python files.
 4. If it's the first time you're reading this guide or you get a "ModuleNotFoundError", install the requirements with the file "!install_requirements.bat" or use the command ```python -m pip install -r requirements.txt``` to install them.
 
-### Extracting the Card_* files from the Unity files
+### D. Extracting the Card_* files from the Unity files
 1. Load all 5 **Card_\*** files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
 2. Click on the **Asset List** tab.
 3. Click on **Filter Type** → **TextAsset**.
@@ -63,11 +63,11 @@ The mod contains only text files but to keep the risk of being warned or banned 
 6. Choose a location and click on **Select folder**.
 7. Run the file **_CARD_decrypt_and_split.py** to decrypt all 5 **Card_\*** files and split the **CARD_Name** and **CARD_Desc** files to JSON.
 
-### Replacing the card text and reconverting the Card_* files 
+### E. Replacing the card text and reconverting the Card_* files 
 1. Run the file **_CARD_Desc_replace.py** to replace the card text and modify the decrypted **Card_Part** file.
 2. Run the file **_CARD_merge+encrypt.py** to reconvert and reencrypt the files, so the game can read them.
 
-### Importing the modified Card_* files back into the Unity files.
+### F. Importing the modified Card_* files back into the Unity files.
 1. Create a backup of the original Unity file containing the **CARD_Desc** file .
 2. Load the original Unity file containing the **CARD_Desc** file into **UABEA** by using drag'n'drop or **File** → **Open**.
 3. If the file you opened is compressed, a new window named **Message Box** will appear. Click on **Memory** there.
@@ -84,7 +84,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 11. In the main **UABEA** window click on **File** → **Save**.
 12. Repeat steps 1 to 11 for the **CARD_Indx(.bytes)** and **Card_Part(.bytes)** files.
 
-### Credits
+### G. Credits
 * [akintos](https://gist.github.com/akintos) for [the original decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)
 * [AmidoriA](https://github.com/AmidoriA) for [the original guide](https://github.com/AmidoriA/Master-Duel-Effect)
 * [crazydoomy](https://github.com/crazydoomy) for [the original encryption script](https://discord.com/channels/747402959117353022/938180052984659979/959192997667422228)

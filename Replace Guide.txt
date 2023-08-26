@@ -178,6 +178,9 @@ DEF,\nits effects
 .\n\nOnly count
 .\nOnly count
 
+ die.\n\nUntil 
+ die.\nUntil 
+
 monster(s)\n\n
 monster(s) 
 

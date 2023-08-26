@@ -49,6 +49,7 @@ The mod contains only text files but to keep the risk of being warned or banned 
 1. Click on the green **Code** button in the top right and then on **Download ZIP**.
 2. Extract the ZIP file you've just dowloaded into a new folder.
 3. Copy the above Unity files into the same folder as the Python files.
+4. If it's the first time you're reading this guide or you get a "ModuleNotFoundError", install the requirements with the file "!install_requirements.bat" or use the command ```python -m pip install -r requirements.txt``` to install them.
 
 ### Extracting the Card_* files from the Unity files
 1. Load all 5 **Card_\*** files into **Asset Studio** by using drag'n'drop or **File** → **Load Folder**.
@@ -77,11 +78,11 @@ The mod contains only text files but to keep the risk of being warned or banned 
   
 6. Click on **Plugins** → **Import .txt** → **Ok**.
 7. If the **CARD_Desc** file isn't displayed in the list, click on the drop down box to the right saying **bytes files (\*.bytes)** and select **All types (\*.*)**.
-8. Select the **CARD_Desc** file and click **Open** or double-click the file.
+8. Select the **CARD_Desc(.bytes)** file and click **Open** or double-click the file.
 9. Click on **File** → **Save** → **OK**.
 10. Close the **Assets Info** window.
 11. In the main **UABEA** window click on **File** → **Save**.
-12. Repeat steps 1 to 11 for the **CARD_Indx** and **Card_Part** files.
+12. Repeat steps 1 to 11 for the **CARD_Indx(.bytes)** and **Card_Part(.bytes)** files.
 
 ### Credits
 * [akintos](https://gist.github.com/akintos) for [the original decryption script](https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b)

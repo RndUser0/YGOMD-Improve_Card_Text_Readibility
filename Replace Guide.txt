@@ -151,6 +151,27 @@ hand.\n\n●Attack
 , then
 ,\nthen
 
+, and if you do,
+,\nand if you do,
+
+, and if it does,
+,\nand if it does,
+
+ attack, its effects 
+ attack,\nits effects 
+
+ 0, its effects 
+ 0,\nits effects 
+
+DEF, its effects 
+DEF,\nits effects 
+ 
+ and it cannot 
+\nand it cannot 
+
+ and replace 
+\nand replace 
+
 .\n\nYour choice
 .\nYour choice
 

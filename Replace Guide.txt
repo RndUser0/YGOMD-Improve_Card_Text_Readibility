@@ -31,26 +31,11 @@ max.
 .\n\nIf you cannot,
 . If you cannot,
 
-.\n\nYou can only Special Summon 
-.\nYou can only Special Summon 
-
 .\n\nWhen you do this,
 . When you do this,
 
 .\n\nThis effect
 .\nThis effect
-
-.\nYou can only activate each effect of \"
-.\n\nYou can only activate each effect of \"
-
-.\nYou can only use each effect of \"
-.\n\nYou can only use each effect of \"
-
-.\nYou can only activate 1 \"
-.\n\nYou can only activate 1 \"
-
-.\nYou can only use 1 \"
-.\n\nYou can only use 1 \"
 
 . (Quick Effect):
 .\n\n(Quick Effect):
@@ -79,14 +64,59 @@ max.
 ).\n(When Summoned
 ).\n\n(When Summoned
 
-\n\nThen
-\nThen
+: 
+:\n
+
+FLIP:\n
+FLIP: 
+
+(Number [A-Za-z0-9]{1,6}:)\\n
+\1 
+
+(●.*?:)\\n
+\1 
+
+; 
+;\n
+
+(●.*)\\n\\n
+\1\\n
+
+\n\n●
+\n●
+
+hand.\n●Attack
+hand.\n\n●Attack
+
+\nYou can only activate each effect of \"
+\n\nYou can only activate each effect of \"
+
+\nYou can only use each effect of \"
+\n\nYou can only use each effect of \"
+
+\nYou can only activate 1 \"
+\n\nYou can only activate 1 \"
+
+\nYou can only use 1 \"
+\n\nYou can only use 1 \"
+
+\n\nYou can only activate this effect
+\nYou can only activate this effect
 
 \n\nYou can only use this effect
 \nYou can only use this effect
 
+\n\nYou can only activate the previous effect
+\nYou can only activate the previous effect
+
 \n\nYou can only use the previous effect
 \nYou can only use the previous effect
+
+.\n\nYou can only Special Summon 
+.\nYou can only Special Summon 
+
+\n\nThen
+\nThen
 
 \n\nThis is a Quick
 \nThis is a Quick
@@ -165,6 +195,3 @@ vs.
 
 \n\n[Pendulum
 \n[Pendulum
-
-\n\n●
-\n●

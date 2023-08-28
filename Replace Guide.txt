@@ -142,14 +142,17 @@ hand.\n\n●Attack
 .\n\nWhile
 .\nWhile
 
-, also
-,\nalso
+, also 
+,\nalso 
 
-, but
-,\nbut
+, but 
+,\nbut 
 
-, then
-,\nthen
+,\nbut different 
+, but different 
+
+, then 
+,\nthen 
 
 , and if you do,
 ,\nand if you do,
@@ -231,3 +234,6 @@ vs.
 
 \n\n[Pendulum
 \n[Pendulum
+
+(.*,)\\n([^.]*?;)
+\1 \2

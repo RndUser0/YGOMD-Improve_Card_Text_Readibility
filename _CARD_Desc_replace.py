@@ -162,7 +162,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 				First_Pendulum_Element_Offset = Card_Desc.find('[Pendulum Effect]')			
 		#####################
 		#Regular replacement:
-		if not any([x in RG_list_backup[RG_list_i] for x in [r'\.',r'\\','([']]): #check if replacement instruction contains RegEx		
+		if not any([x in RG_list_backup[RG_list_i] for x in [r'\.',r'\\','([','.*']]): #check if replacement instruction contains RegEx		
 			if Mod_Card_Part_file == True:
 				Before_replacement_index_list = Find_all_in_str(Card_Desc, RG_list[RG_list_i])			
 				

@@ -52,6 +52,45 @@ max.
 ).\n(When Summoned
 ).\n\n(When Summoned
 
+, also([ ,])
+,\\nalso\1
+
+, but([ ,])
+,\nbut\1
+
+,\\n(but[^.\u25CF]*?different)
+, \1
+
+, then([ ,])
+,\nthen\1
+
+, and if you do,
+,\nand if you do,
+
+, and if it does,
+,\nand if it does,
+
+ attack, its effects 
+ attack,\nits effects 
+
+ 0, its effects 
+ 0,\nits effects 
+
+DEF, its effects 
+DEF,\nits effects 
+
+(●.*?,)\\n
+\1 
+ 
+ and it cannot 
+\nand it cannot 
+
+ and replace 
+\nand replace 
+
+(●.*?)\\nand
+\1 
+
 : 
 :\n
 
@@ -67,41 +106,50 @@ FLIP:
 ; 
 ;\n
 
+(●.*?;)\\n
+\1 
+
 (●.*)\\n\\n
 \1\\n
 
 \n\n●
 \n●
 
+(●.*?\.)\\n([^\u25CF])
+\1 \2
+
 hand.\n●Attack
 hand.\n\n●Attack
 
-\nYou can only activate each effect of \"
-\n\nYou can only activate each effect of \"
+(\\n| )You can only activate each effect of \\"
+\\n\\nYou can only activate each effect of \\"
 
-\nYou can only use each effect of \"
-\n\nYou can only use each effect of \"
+(\\n| )You can only activate each effect of \\"
+\\n\\nYou can only activate each effect of \\"
 
-\nYou can only activate 1 \"
-\n\nYou can only activate 1 \"
+(\\n| )You can only use each effect of \\"
+\\n\\nYou can only use each effect of \\"
 
-\nYou can only use 1 \"
-\n\nYou can only use 1 \"
+(\\n| )You can only activate 1 \\"
+\\n\\nYou can only activate 1 \\"
 
-\n\nYou can only activate this effect
-\nYou can only activate this effect
+(\\n| )You can only use 1 \\"
+\\n\\nYou can only use 1 \\"
 
-\n\nYou can only use this effect
-\nYou can only use this effect
+(\\n\\n| )You can only activate this effect
+\\nYou can only activate this effect
 
-\n\nYou can only activate the previous effect
-\nYou can only activate the previous effect
+(\\n\\n| )You can only use this effect
+\\nYou can only use this effect
 
-\n\nYou can only use the previous effect
-\nYou can only use the previous effect
+(\\n\\n| )You can only activate the previous effect
+\\nYou can only activate the previous effect
 
-.\n\nYou can only Special Summon 
-.\nYou can only Special Summon 
+(\\n\\n| )You can only use the previous effect
+\\nYou can only use the previous effect
+
+\.(\\n\\n| )You can only Special Summon 
+\.\\nYou can only Special Summon 
 
 \n\nThen
 \nThen
@@ -141,39 +189,6 @@ hand.\n\n●Attack
 
 .\n\nWhile
 .\nWhile
-
-, also 
-,\nalso 
-
-, but 
-,\nbut 
-
-,\nbut different 
-, but different 
-
-, then 
-,\nthen 
-
-, and if you do,
-,\nand if you do,
-
-, and if it does,
-,\nand if it does,
-
- attack, its effects 
- attack,\nits effects 
-
- 0, its effects 
- 0,\nits effects 
-
-DEF, its effects 
-DEF,\nits effects 
- 
- and it cannot 
-\nand it cannot 
-
- and replace 
-\nand replace 
 
 .\n\nYour choice
 .\nYour choice

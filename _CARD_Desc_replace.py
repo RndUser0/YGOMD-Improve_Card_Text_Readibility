@@ -11,11 +11,11 @@ from _defs import *
 #1. Enable Card_Part modding and check for command line argument
 
 Mod_Card_Part_file = True
-Write_card_effects = False
+Test_mode = False
 
 if len(sys.argv) > 1:
-	if sys.argv[1].find('e') != -1:
-		Write_card_effects = True
+	if sys.argv[1].find('t') != -1:
+		Test_mode = True
 	if sys.argv[1].find('p') != -1:
 		Mod_Card_Part_file = False
 
@@ -123,6 +123,17 @@ for i in range(len(CARD_Desc_list)):
 	CARD_Desc_list[i] = Replace_in_str(CARD_Desc_list[i], Replacement_list)
 
 CARD_Desc_list.insert(0, '') # Insert a blank item at the start of this list to match its indices with the following Card_Pidx ones
+
+# For testing: Write card descriptions to text file (start)
+if Mod_Card_Part_file == True and Test_mode == True:
+	Card_desc_filename = 'Test - card descriptions before replacement.txt'
+	print('Writing card description list to file "' + Card_desc_filename + '"...')	
+	with open(Card_desc_filename, 'wt', encoding='utf8') as f_Card_desc_filename:		
+		for i in range(0,len(CARD_Desc_list),1):
+			f_Card_desc_filename.write(CARD_Desc_list[i] + '\n')		
+	f_Card_desc_filename.close()	
+	print('Completed.')
+# For testing: Write card descriptions to text file (end)
 
 if Mod_Card_Part_file == True:
 	print('Reading Card_Pidx and Card_Part strings into lists...')
@@ -254,13 +265,13 @@ if Mod_Card_Part_file == True:
 	WriteByteData(Card_Part_filename, Card_Part_content)
 	print('Completed.')
 
-# For testing (start)
-if Mod_Card_Part_file == True and Write_card_effects == True:
+# For testing: Write card effects to text file (start)
+if Mod_Card_Part_file == True and Test_mode == True:
 	Card_effects_filename = 'Test - card effects before replacement.txt'
 	print('Writing card effect list to file "' + Card_effects_filename + '"...')	
 	WriteEffects(Card_effects_filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list)
 	print('Completed.')
-# For testing (end)
+# For testing: Write card effects to text file (end)
 
 #10. Write card description list to JSON file
 

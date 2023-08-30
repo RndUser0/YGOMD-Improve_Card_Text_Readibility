@@ -16,7 +16,7 @@
 ([a-z])\\n
 \1\\n\\n
 
-^([^.]*?\u0029)\\n([A-Z].*)
+([^.]\u0029)\\n([A-Z].*)
 \1\\n\\n\2
 
 \\"\\n([A-Z])
@@ -51,75 +51,6 @@ max.
 
 ).\n(When Summoned
 ).\n\n(When Summoned
-
-, also([ ,])
-,\\nalso\1
-
-, but([ ,])
-,\nbut\1
-
-,\\n(but[^.\u25CF]*?different)
-, \1
-
-, then([ ,])
-,\nthen\1
-
-, and if you do,
-,\nand if you do,
-
-, and if it does,
-,\nand if it does,
-
- attack, its effects 
- attack,\nits effects 
-
- 0, its effects 
- 0,\nits effects 
-
-DEF, its effects 
-DEF,\nits effects 
-
-(●.*?,)\\n
-\1 
- 
- and it cannot 
-\nand it cannot 
-
- and replace 
-\nand replace 
-
-(●.*?)\\nand
-\1 
-
-: 
-:\n
-
-FLIP:\n
-FLIP: 
-
-(Number [A-Za-z0-9]{1,6}:)\\n
-\1 
-
-(●.*?:)\\n
-\1 
-
-; 
-;\n
-
-(●.*?;)\\n
-\1 
-
-(●.*)\\n\\n
-\1\\n
-
-\n\n●
-\n●
-
-(●.*?\.)\\n([^\u25CF])
-\1 \2
-
-hand.\n●Attack
-hand.\n\n●Attack
 
 (\\n| )You can only activate each effect of \\"
 \\n\\nYou can only activate each effect of \\"
@@ -187,9 +118,6 @@ hand.\n\n●Attack
 \.\\n\\n(\(?Xyz Materials )
 \.\\n\1
 
-.\n\nWhile
-.\nWhile
-
 .\n\nYour choice
 .\nYour choice
 
@@ -249,6 +177,3 @@ vs.
 
 \n\n[Pendulum
 \n[Pendulum
-
-(.*,)\\n([^.]*?;)
-\1 \2

@@ -52,6 +52,21 @@ max.
 ).\n(When Summoned
 ).\n\n(When Summoned
 
+\n\n●
+\n●
+
+(●[^\u005B]*?\.)\\n\\n([^\u25CF\u005B])
+\1 \2
+
+(●[^\u005B]*?\.)\\n\\n([^\u25CF\u005B])
+\1 \2
+
+(●[^\u005B]*?\.)\\n([^\u25CF\u005B])
+\1 \2
+
+(●[^\u005B]*?\.)\\n([^\u25CF\u005B])
+\1 \2
+
 (\\n| )You can only activate each effect of \\"
 \\n\\nYou can only activate each effect of \\"
 
@@ -67,6 +82,21 @@ max.
 (\\n| )You can only use 1 \\"
 \\n\\nYou can only use 1 \\"
 
+ You can only control 1 \"
+\n\nYou can only control 1 \"
+
+. You cannot Special Summon any monsters during the turn you activate this effect, except 
+.\nYou cannot Special Summon any monsters during the turn you activate this effect, except 
+
+. You cannot Special Summon monsters the turn you activate this card, except \"Gem-Knight\" monsters.
+.\n\nYou cannot Special Summon monsters the turn you activate this card, except \"Gem-Knight\" monsters.
+
+. You cannot Special Summon monsters the turn you activate this effect, except WIND monsters.
+.\nYou cannot Special Summon monsters the turn you activate this effect, except WIND monsters.
+
+\. During (either player's turn |the |your )
+\.\n\nDuring \1
+
 (\\n\\n| )You can only activate this effect
 \\nYou can only activate this effect
 
@@ -79,8 +109,83 @@ max.
 (\\n\\n| )You can only use the previous effect
 \\nYou can only use the previous effect
 
-\.(\\n\\n| )You can only Special Summon 
-\.\\nYou can only Special Summon 
+\. You can only (Special|Fusion|Ritual|Synchro|Xyz|Link)( Summon[^\u005B]*?this way\.)
+\.\\nYou can only \1\2
+
+\.\\n\\nYou can only (Special|Fusion|Ritual|Synchro|Xyz|Link)( Summon[^\u005B]*?this way\.)
+\.\\nYou can only \1\2
+
+\. You can only (Special|Fusion|Ritual|Synchro|Xyz|Link)( Summon[\.^\u005B]*?this effect\.)
+\.\\nYou can only \1\2
+
+\.\\n\\nYou can only (Special|Fusion|Ritual|Synchro|Xyz|Link)( Summon[\.^\u005B]*?this effect\.)
+\.\\nYou can only \1\2
+
+\. You can only (Special|Fusion|Ritual|Synchro|Xyz|Link)( Summon[^\u005B]*?\.)
+\.\\n\\nYou can only \1\2
+ 
+\\n\\n(When|If|During the turn this card was) (Special |Fusion |Ritual |Synchro |Xyz |Link |)Summoned this way
+\\n\1 \2Summoned this way
+ 
+ (When|If|During the turn this card was) (Special |Fusion |Ritual |Synchro |Xyz |Link |)Summoned this way
+\\n\1 \2Summoned this way
+
+. (These Special Summons are treated 
+.\n(These Special Summons are treated 
+
+. Neither player can activate cards or effects in response to this effect's activation.
+.\nNeither player can activate cards or effects in response to this effect's activation.
+
+. You can banish this card
+.\n\nYou can banish this card
+
+\. If this card is (banished |sent to the G|in your G)
+\.\\n\\nIf this card is \1
+
+([^1])\. Once 
+\1\.\n\nOnce 
+
+. You can only activate the effect 
+.\\nYou can only activate the effect 
+
+. If this card in your possession 
+.\n\nIf this card in your possession 
+
+.\n\n(This card is NOT treated as a Trap
+.\n(This card is NOT treated as a Trap
+
+\n\nThis effect 
+\nThis effect 
+
+\"Beat Cop from the Underworld\" once per turn. 
+\"Beat Cop from the Underworld\" once per turn.\n
+
+\. (If|When|While) (a|an) 
+\.\\n\\n\1 \2 
+
+. You can target 
+.\n\nYou can target 
+
+. This turn, you cannot discard another card with the same name 
+.\nThis turn, you cannot discard another card with the same name 
+
+. When your 
+.\n\nWhen your 
+
+. You can only use 
+.\nYou can only use 
+
+. If you have \"Endless Engine Argyro System\"
+.\nIf you have \"Endless Engine Argyro System\"
+
+. If you activate 
+.\n\nIf you activate 
+
+. A \"Therion\" monster 
+.\nA \"Therion\" monster 
+
+. Your opponent must 
+.\nYour opponent must 
 
 \n\nThen
 \nThen

@@ -151,6 +151,9 @@
 .\n\n(This card is NOT treated as a Trap
 .\n(This card is NOT treated as a Trap
 
+.\n\n(This card is also still a Trap
+.\n(This card is also still a Trap
+
 \n\nThis effect 
 \nThis effect 
 

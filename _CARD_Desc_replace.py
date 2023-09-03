@@ -154,7 +154,7 @@ if Test_mode == True and Mod_Card_Part_file == True:
 	print('Completed.')
 # For testing: Write card effects to text file (end)
 
-#7. Apply string replacement instructions in replace guide text file:
+#7. Apply string replacement instructions in replace guide text file and modifying card effect offsets:
 
 if Mod_Card_Part_file == True:
 	print('Replacing in card descriptions and modifying card effect offsets...')
@@ -166,7 +166,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 		Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
 		#Test start
 		if Test_mode == True:
-			Test_i = 0
+			Test_CARD_Desc_list_i = 0
 		#Test end	
 		if Mod_Card_Part_file == True:
 			Regular_Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i]
@@ -185,7 +185,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 			if Mod_Card_Part_file == True:
 				Before_replacement_index_list = Find_all_in_str(Card_Desc, RG_list[RG_list_i])			
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and Before_replacement_index_list != []:
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
 					print('Card_Desc before repl:',CARD_Desc_list[CARD_Desc_list_i])
 					print('RG search instruction:',RG_list[RG_list_i])
 					print('RG replace instruction:',RG_list[RG_list_i+1])
@@ -203,16 +203,16 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 						#print("After_replacement_index_list:",After_replacement_index_list)
 						
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and Before_replacement_index_list != []:
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
 					print('After_replacement_index_list:',After_replacement_index_list)
 					print('Card_Desc after repl:',CARD_Desc_list[CARD_Desc_list_i])
 				#Test end		
 		#RegEx replacement:
 		else:			
-			if Mod_Card_Part_file == True:
+			if Mod_Card_Part_file == True:				
 				Before_replacement_index_list = Find_all_RE_in_str(Card_Desc, RG_list[RG_list_i])
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and Before_replacement_index_list != []:
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
 					print('Card_Desc before repl:',CARD_Desc_list[CARD_Desc_list_i])
 					print('RG search instruction:',RG_list[RG_list_i])
 					print('RG replace instruction:',RG_list[RG_list_i+1])				
@@ -238,11 +238,13 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 					Group_2_Ref_End =  -1
 				RE_Repl_Instr_to_Search_Instr = Replace_in_str(RE_Repl_Instr, [(r'\1',RE_Search_Instr[Group_1_Ref_Start:Group_1_Ref_End]),(r'\2',RE_Search_Instr[Group_2_Ref_Start:Group_2_Ref_End])])
 				After_replacement_index_list = Find_all_RE_in_str(Card_Desc, RE_Repl_Instr_to_Search_Instr)
-				if Before_replacement_index_list != []:					
+				if Before_replacement_index_list != []:  #Delete entries at start of After_replacement_index_list so that it has the same length as Before_replacement_index_list
 					while len(Before_replacement_index_list) < len(After_replacement_index_list) and After_replacement_index_list[0] < Before_replacement_index_list[0]:
 						del After_replacement_index_list[0]					
+				
+				
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and Before_replacement_index_list != []:					
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:					
 					print('Card_Desc after repl:',CARD_Desc_list[CARD_Desc_list_i])
 				#Test end				
 		#####################
@@ -254,7 +256,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 				After_replacement_end_index = After_replacement_index_list[i+1]
 				Replacement_diff = (After_replacement_end_index - After_replacement_start_index) - (Before_replacement_end_index - Before_replacement_start_index)
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and Before_replacement_index_list != []:
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
 					print('Before_replacement_index_list:',Before_replacement_index_list)
 					print('After_replacement_index_list:',After_replacement_index_list)				
 				#Test end
@@ -263,10 +265,15 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
 					Effect_End_Offset = Effect_End_Offset_list[Effect_ID]
 
-					if After_replacement_start_index > 0 and After_replacement_start_index  <  Effect_Start_Offset:
+					if (After_replacement_start_index > 0 and
+					       After_replacement_end_index > 0 and
+					       After_replacement_start_index  <  Effect_Start_Offset and
+					       After_replacement_end_index  <  Effect_End_Offset and
+					       abs(Replacement_diff) <= 2 and
+					       Card_Desc[Effect_Start_Offset] != '●'):
 						Effect_Start_Offset_list[Effect_ID] = Effect_Start_Offset + Replacement_diff
 
-					if After_replacement_end_index > 0 and After_replacement_end_index  <  Effect_End_Offset:						
+					if After_replacement_end_index > 0 and After_replacement_end_index  <  Effect_End_Offset and abs(Replacement_diff) <= 2:
 						Effect_End_Offset_list[Effect_ID] = Effect_End_Offset + Replacement_diff
 				
 				if Pendulum_Effects_Qty > 0:
@@ -275,14 +282,14 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 						Pendulum_Effect_Start_Offset = Effect_Start_Offset_list[Pendulum_Effect_ID]
 						Pendulum_Effect_End_Offset = Effect_End_Offset_list[Pendulum_Effect_ID]
 					
-						if  After_replacement_start_index > 0 and After_replacement_start_index < Pendulum_Effect_Start_Offset:					
-							Effect_Start_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_Start_Offset + Replacement_diff						
+						if  After_replacement_start_index > 0 and After_replacement_start_index < Pendulum_Effect_Start_Offset and abs(Replacement_diff) <= 2:					
+							Effect_Start_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_Start_Offset + Replacement_diff
 
-						if After_replacement_end_index > 0 and After_replacement_end_index < Pendulum_Effect_End_Offset:											
+						if After_replacement_end_index > 0 and After_replacement_end_index < Pendulum_Effect_End_Offset and abs(Replacement_diff) <= 2:
 							Effect_End_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_End_Offset + Replacement_diff
 				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_i and After_replacement_index_list != []:
-					Test_Effect_ID = 13325
+				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and After_replacement_index_list != []:
+					Test_Effect_ID = 0
 					print('Effect_ID:',Test_Effect_ID)
 					Test_Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
 					Test_Effect_Start_Offset = Effect_Start_Offset_list[Test_Effect_ID]

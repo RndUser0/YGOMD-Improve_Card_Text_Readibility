@@ -100,6 +100,9 @@
 (\\n\\n| )You can only use this effect
 \\nYou can only use this effect
 
+(\\n\\n| )You can use this effect
+\\nYou can use this effect
+
 (\\n\\n| )You can only activate the previous effect
 \\nYou can only activate the previous effect
 
@@ -231,6 +234,12 @@
 
  die.\n\nUntil 
  die.\nUntil 
+
+.\n\nCall the type 
+.\nCall the type 
+
+.\n\nIf you call 
+.\nIf you call 
 
 monster(s)\n\n
 monster(s) 

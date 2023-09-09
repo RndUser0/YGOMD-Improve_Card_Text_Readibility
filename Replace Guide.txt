@@ -46,8 +46,8 @@
 .) 
 .)\n\n
 
-).\n(When Summoned
-).\n\n(When Summoned
+\n\nThey cannot 
+\nThey cannot 
 
 \n\n●
 \n●
@@ -227,10 +227,10 @@
 \.\\n\1
 
 .\n\nYour choice
-.\nYour choice
+. Your choice
 
 .\n\nOnly count
-.\nOnly count
+. Only count
 
  die.\n\nUntil 
  die.\nUntil 

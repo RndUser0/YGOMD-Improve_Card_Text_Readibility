@@ -256,6 +256,9 @@
 .\n\nIf you call 
 .\nIf you call 
 
+.\n\nIf it does
+. If it does
+
 monster(s)\n\n
 monster(s) 
 

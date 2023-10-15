@@ -202,6 +202,9 @@
 . A \"Therion\" monster 
 .\nA \"Therion\" monster 
 
+. A \"Purrely\" Xyz 
+.\n\nA \"Purrely\" Xyz 
+
 . Your opponent must 
 .\nYour opponent must 
 

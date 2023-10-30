@@ -16,11 +16,74 @@
 \.\\n\\n(Your opponent[^.]*this effect[^.]*?\.)
 \.\\n\1
 
+\.\\n\\n(Other[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(Your other[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If [^.]*while this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If this card was [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you activate[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you use[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you control \"[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you control no [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you control this [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you control [^.]*when this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you draw [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you Special Summoned [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you Special Summon a monster[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you Special Summon to [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you Ritual Summon [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you inflict[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you placed [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you banish[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(If you did not [^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(The[^.]*this effect[^.]*?\.)
+\.\\n\1
+
+\.\\n\\n(When [^.]*this card's effect[^.]*?\.)
+\.\\n\1
+
 \.\\n\\n(This card[^.]*this way[^.]*\.)
 \.\\n\1
 
 \.\\n\\n(That [^.]*\.)
-\.\\n\1
+\. \1
 
 ([a-z])\\n
 \1\\n\\n
@@ -102,6 +165,9 @@
 
 \. During (either player's turn |the |your )
 \.\n\nDuring \1
+
+\.\n\nDuring the turn you (activate|use) this effect,
+\.\nDuring the turn you \1 this effect,
 
 (\\n\\n| )You can only activate this effect
 \\nYou can only activate this effect
@@ -233,16 +299,13 @@
 .\nTransfer this card's material
 
 .\n\nOtherwise
-.\nOtherwise
+. Otherwise
 
 .\n\nIts
-.\nIts
-
-.\n\nAttached
-.\nAttached
+. Its
 
 \.\\n\\n(\(?Xyz Materials )
-\.\\n\1
+\. \1
 
 .\n\nYour choice
 . Your choice
@@ -253,14 +316,59 @@
  die.\n\nUntil 
  die.\nUntil 
 
+.\n\nIf the result 
+. If the result 
+
 .\n\nCall the type 
-.\nCall the type 
+. Call the type 
 
 .\n\nIf you call 
-.\nIf you call 
+. If you call 
+
+.\n\nIf it is 
+. If it is 
+
+.\n\nIf its 
+. If its 
 
 .\n\nIf it does
 . If it does
+
+.\n\nIf not, 
+. If not, 
+
+\.\\n\\nIf you do(| not| this)(,|:)
+\. If you do\1\2
+
+\.\\n\\nIf you do not (Special|Xyz) Summon
+\. If you do not \1 Summon
+
+\.\\n\\nWhen you do(,|:)
+\. When you do\1
+
+ take control of it.\n\nIf you do not control
+ take control of it. If you do not control
+
+.\n\nIf you do not control 2 or more of the same 
+. If you do not control 2 or more of the same 
+
+ Union Monster at a time.\n\nIf the 
+ Union Monster at a time. If the 
+
+.\n\nYou must also Tribute 
+.\nYou must also Tribute 
+
+.\n\nTheir
+. Their
+
+\.\\n\\n(Banish|Destroy) (them|it)
+\. \1 \2
+
+.\n\nFor the rest of this turn after this card resolves
+.\nFor the rest of this turn after this card resolves
+
+\.\\n\\nSpecial Summon (it|that monster)
+\. Special Summon \1
 
 monster(s)\n\n
 monster(s) 

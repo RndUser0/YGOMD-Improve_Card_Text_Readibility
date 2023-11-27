@@ -85,6 +85,9 @@
 \.\\n\\n(That [^.]*\.)
 \. \1
 
+\.\\n\\n([A-Z][^.;:]*?)(also[^.]*?apply the following effect|then[^.]*?apply the following effect)
+\.\\n\1\2
+
 ([a-z])\\n
 \1\\n\\n
 

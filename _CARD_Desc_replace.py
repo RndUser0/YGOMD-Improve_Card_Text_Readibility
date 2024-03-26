@@ -12,12 +12,15 @@ from _defs import *
 
 Mod_Card_Part_file = True
 Test_mode = False
+Add_Effect_Numbers = False
 
 if len(sys.argv) > 1:
 	if sys.argv[1].find('t') != -1:
 		Test_mode = True
 	if sys.argv[1].find('p') != -1:
 		Mod_Card_Part_file = False
+	if sys.argv[1].find('n') != -1:
+		Add_Effect_Numbers = True
 
 #2. Check if Replace Guide, CARD_Desc JSON, decrypted Card_Part and decrypted Card_Pidx files exist:
 
@@ -167,7 +170,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 		#Test start
 		if Test_mode == True:
 			Test_CARD_Desc_list_i = 0
-		#Test end	
+		#Test end
 		if Mod_Card_Part_file == True:
 			Regular_Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i]
 			Pendulum_Effects_Qty = Pendulum_Effects_Qty_list[CARD_Desc_list_i]
@@ -178,8 +181,8 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 			if Pendulum_Effects_Qty > 0:
 				First_Pendulum_Effect_ID = First_Effect_ID + Regular_Effects_Qty
 				First_Pendulum_Effect_Offset = Effect_Start_Offset_list[First_Pendulum_Effect_ID]
-				First_Pendulum_Element_Offset = Card_Desc.find('[Pendulum Effect]')			
-		#####################
+				First_Pendulum_Element_Offset = Card_Desc.find('[Pendulum Effect]')					
+		##Replacement - start
 		#Regular replacement:
 		if not any([x in RG_list_backup[RG_list_i] for x in [r'\.',r'\\','([','.*','|']]): #check if replacement instruction contains RegEx		
 			if Mod_Card_Part_file == True:
@@ -247,7 +250,8 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:					
 					print('Card_Desc after repl:',CARD_Desc_list[CARD_Desc_list_i])
 				#Test end				
-		#####################
+		##Replacement - end
+		#Card_Part modding - start
 		if Mod_Card_Part_file == True:
 			for i in range(0,len(Before_replacement_index_list)-1,2):
 				Before_replacement_start_index = Before_replacement_index_list[i]
@@ -287,6 +291,7 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 
 						if After_replacement_end_index > 0 and After_replacement_end_index < Pendulum_Effect_End_Offset and abs(Replacement_diff) <= 2:
 							Effect_End_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_End_Offset + Replacement_diff
+				#Card_Part modding - end
 				#Test start
 				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and After_replacement_index_list != []:
 					Test_Effect_ID = 0

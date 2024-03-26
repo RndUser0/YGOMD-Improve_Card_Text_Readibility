@@ -302,6 +302,9 @@ def Replace_in_str(str, replacement_list):
 			str = str.replace(char, replacement)
 	return str
 
+def Insert_into_str(Str, InsertStr, StrPos):
+    return Str[:StrPos] + InsertStr + Str[StrPos:]
+
 def WriteEffects(filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list):
 	with open(f'{filename}', "wt", encoding="utf8") as f:		
 		for CARD_Desc_list_i in range(len(CARD_Desc_list)):			
@@ -312,4 +315,10 @@ def WriteEffects(filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Of
 				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
 				Effect_End_Offset = Effect_End_Offset_list[Effect_ID]
 				f.write(Card_Desc[Effect_Start_Offset:Effect_End_Offset] + '\n')
+	f.close()
+
+def WriteDescs(filename, CARD_Desc_list):
+	with open(filename, 'wt', encoding='utf8') as f:
+		for i in range(0,len(CARD_Desc_list),1):
+			f.write(CARD_Desc_list[i] + '\n')		
 	f.close()

@@ -157,7 +157,7 @@ if Test_mode == True and Mod_Card_Part_file == True:
 	print('Completed.')
 # For testing: Write card effects to text file (end)
 
-#7. Apply string replacement instructions in replace guide text file and modifying card effect offsets:
+#7. Apply string replacement instructions in replace guide text file and modify card effect offsets:
 
 if Mod_Card_Part_file == True:
 	print('Replacing in card descriptions and modifying card effect offsets...')

@@ -49,6 +49,9 @@ if Mod_Card_Part_file == True:
 	Effect_Start_Offset_list = []
 	Effect_End_Offset_list = []
 
+if Add_Effect_Numbers == True:
+	Effect_Numbers_list = ['①','②','③','④','⑤']
+
 #4. Read Replace Guide text file into the RG_list:
 
 print('Reading file "' + RG_filename + '" into list...')
@@ -157,7 +160,7 @@ if Test_mode == True and Mod_Card_Part_file == True:
 	print('Completed.')
 # For testing: Write card effects to text file (end)
 
-#7. Apply string replacement instructions in replace guide text file and modify card effect offsets:
+#7. Apply string replacement instructions in replace guide text file, modify card effect offsets and add numbers before effects:
 
 if Mod_Card_Part_file == True:
 	print('Replacing in card descriptions and modifying card effect offsets...')
@@ -303,6 +306,115 @@ for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
 					print('Effect_End_Offset:', Test_Effect_End_Offset)
 					print('Effect:', Test_Card_Desc[Test_Effect_Start_Offset:Test_Effect_End_Offset])
 				#Test end
+	#Add numbers before effects - start
+	if Add_Effect_Numbers == True:
+		Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
+		Regular_Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i]
+		Pendulum_Effects_Qty = Pendulum_Effects_Qty_list[CARD_Desc_list_i]
+		Effects_Qty = Regular_Effects_Qty + Pendulum_Effects_Qty
+		First_Effect_ID = First_Effect_ID_list[CARD_Desc_list_i]			
+		
+		if Regular_Effects_Qty > 1:
+			for i in range(Regular_Effects_Qty):
+				#Create a sorted temporary regular effect start offset list to fix wrong effect numbers - start
+				Temp_Regular_Effect_Start_Offset_list = []				
+				Sorted_Temp_Regular_Effect_Start_Offset_list = []
+				for j in range(Regular_Effects_Qty):
+					Effect_ID = First_Effect_ID + j
+					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
+					Temp_Regular_Effect_Start_Offset_list.append(Effect_Start_Offset)
+				if len(Temp_Regular_Effect_Start_Offset_list) > 0:					
+					for j in range(len(Temp_Regular_Effect_Start_Offset_list)):
+						Sorted_Temp_Regular_Effect_Start_Offset_list.append(Temp_Regular_Effect_Start_Offset_list[j])
+				Sorted_Temp_Regular_Effect_Start_Offset_list.sort()
+				#Create a sorted temporary regular effect start offset list to fix wrong effect numbers - end
+				Effect_ID = First_Effect_ID + i
+				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]				
+				for j in range(len(Temp_Regular_Effect_Start_Offset_list)):
+					if Effect_Start_Offset == Temp_Regular_Effect_Start_Offset_list[j]:
+						Effect_Number = j				
+				for j in range(len(Sorted_Temp_Regular_Effect_Start_Offset_list)):
+					if Effect_Start_Offset == Sorted_Temp_Regular_Effect_Start_Offset_list[j]:
+						Fixed_Effect_Number = j
+				New_Card_Desc = Insert_into_str(Card_Desc, Effect_Numbers_list[Fixed_Effect_Number], Effect_Start_Offset)
+				Card_Desc = New_Card_Desc
+				CARD_Desc_list[CARD_Desc_list_i] = Card_Desc
+				##Fix effect offsets - start
+				#Fix offset of first effect - start				
+				if i == 0 and Fixed_Effect_Number > Effect_Number:
+					for j in range(Effects_Qty - i):
+							Effect_End_Offset_list[Effect_ID + j] += Fixed_Effect_Number
+					for j in range(Effects_Qty - i):
+							Effect_Start_Offset_list[Effect_ID + j] +=  Fixed_Effect_Number
+				#Fix offset of first effect - end
+				#Fix offsets before the current one
+				for j in range(i):
+					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID - j]:
+						Effect_End_Offset_list[Effect_ID - j] += 1
+				for j in range(1,i):	
+					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID - j]:
+						Effect_Start_Offset_list[Effect_ID - j] += 1
+				#Fix offsets after the current one
+				for j in range(Effects_Qty - i):
+					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID + j]:
+						Effect_End_Offset_list[Effect_ID + j] += 1
+				for j in range(1,Effects_Qty - i):	
+					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID + j]:
+						Effect_Start_Offset_list[Effect_ID + j] += 1
+				##Fix effect offsets - end
+		'''
+		if Pendulum_Effects_Qty > 1:
+			First_Pendulum_Effect_ID = First_Effect_ID + Regular_Effects_Qty
+			for i in range(Pendulum_Effects_Qty):
+				#Create a sorted temporary Pendulum effect start offset list to fix wrong effect numbers - start
+				Temp_Pendulum_Effect_Start_Offset_list = []				
+				Sorted_Temp_Pendulum_Effect_Start_Offset_list = []
+				for j in range(Pendulum_Effects_Qty):
+					Effect_ID = First_Pendulum_Effect_ID + j
+					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
+					Temp_Pendulum_Effect_Start_Offset_list.append(Effect_Start_Offset)
+				if len(Temp_Pendulum_Effect_Start_Offset_list) > 0:					
+					for j in range(len(Temp_Pendulum_Effect_Start_Offset_list)):
+						Sorted_Temp_Pendulum_Effect_Start_Offset_list.append(Temp_Pendulum_Effect_Start_Offset_list[j])
+				Sorted_Temp_Pendulum_Effect_Start_Offset_list.sort()
+				#Create a sorted temporary Pendulum effect start offset list to fix wrong effect numbers - end
+				Effect_ID = First_Pendulum_Effect_ID + i
+				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]				
+				for j in range(len(Temp_Pendulum_Effect_Start_Offset_list)):
+					if Effect_Start_Offset == Temp_Pendulum_Effect_Start_Offset_list[j]:
+						Pendulum_Effect_Number = j				
+				for j in range(len(Sorted_Temp_Pendulum_Effect_Start_Offset_list)):
+					if Effect_Start_Offset == Sorted_Temp_Pendulum_Effect_Start_Offset_list[j]:
+						Fixed_Pendulum_Effect_Number = j
+				New_Card_Desc = Insert_into_str(Card_Desc, Effect_Numbers_list[Fixed_Pendulum_Effect_Number], Effect_Start_Offset)
+				Card_Desc = New_Card_Desc
+				CARD_Desc_list[CARD_Desc_list_i] = Card_Desc
+				
+				##Fix effect offsets - start
+				#Fix offset of first effect - start				
+				if Pendulum_Effect_Number == 0 and Fixed_Pendulum_Effect_Number > Pendulum_Effect_Number:
+					for j in range(Pendulum_Effects_Qty - i):
+							Effect_End_Offset_list[Effect_ID + j] += Fixed_Pendulum_Effect_Number
+					for j in range(Pendulum_Effects_Qty - i):
+							Effect_Start_Offset_list[Effect_ID + j] +=  Fixed_Pendulum_Effect_Number
+				#Fix offset of first effect - end
+				#Fix offsets before the current one
+				for j in range(i):
+					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID - j]:
+						Effect_End_Offset_list[Effect_ID - j] += 1
+				for j in range(1,i):	
+					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID - j]:
+						Effect_Start_Offset_list[Effect_ID - j] += 1
+				#Fix offsets after the current one
+				for j in range(Pendulum_Effects_Qty - i):
+					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID + j]:
+						Effect_End_Offset_list[Effect_ID + j] += 1
+				for j in range(1,Pendulum_Effects_Qty - i):	
+					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID + j]:
+						Effect_Start_Offset_list[Effect_ID + j] += 1
+				##Fix effect offsets - end
+				'''
+	#Add numbers before effects - end
 print('Completed.')
 
 #8. Convert Card_Part_list back to byte string

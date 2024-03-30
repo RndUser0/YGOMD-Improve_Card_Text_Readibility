@@ -1,4 +1,6 @@
 # Yu-Gi-Oh! Master Duel - Improve Card Text Readibility mod
+**Improved version [here](https://github.com/mtamc/masterduel_readability).**
+
 This mod adds line breaks to card effect text to separate multiple effects from each other.
 
 Original:

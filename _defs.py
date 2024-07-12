@@ -1,451 +1,324 @@
-# python3
-import binascii
-import fileinput
-#import json
-import math
-#import os
-#import regex
-#import sys
-from _defs import *
-
-#1. Enable Card_Part modding and check for command line argument
-
-Mod_Card_Part_file = True
-Test_mode = False
-Add_Effect_Numbers = False
-
-if len(sys.argv) > 1:
-	if sys.argv[1].find('t') != -1:
-		Test_mode = True
-	if sys.argv[1].find('p') != -1:
-		Mod_Card_Part_file = False
-	if sys.argv[1].find('n') != -1:
-		Add_Effect_Numbers = True
-
-#2. Check if Replace Guide, CARD_Desc JSON, decrypted Card_Part and decrypted Card_Pidx files exist:
-
-Checked_filename_list = Check_files(['Replace Guide.txt', 'CARD_Desc.dec.json', 'Card_Pidx.dec', 'Card_Part.dec'])
-RG_filename = Checked_filename_list[0]
-CARD_Desc_JSON_filename = Checked_filename_list[1]
-Card_Pidx_filename = Checked_filename_list[2]
-Card_Part_filename = Checked_filename_list[3]
-
-for i in range(len(Checked_filename_list)):
-	print('Using file "' + Checked_filename_list[i] + '".')
-
-#3. Create lists
-
-RG_list = [] #Replacement Guide list
-RG_list_backup = [] 
-CARD_Desc_list = []
-
-if Mod_Card_Part_file == True:
-	CARD_Desc_ID_list = []
-	First_Effect_ID_list = []
-	Regular_Effects_Qty_list = []
-	Pendulum_Effects_Qty_list = []
-
-	Effect_ID_list = []
-	Effect_Start_Offset_list = []
-	Effect_End_Offset_list = []
-
-if Add_Effect_Numbers == True:
-	Effect_Numbers_list = ['①','②','③','④','⑤']
-
-#4. Read Replace Guide text file into the RG_list:
-
-print('Reading file "' + RG_filename + '" into list...')
-
-with open(RG_filename, 'rt', encoding="utf8") as f_RG:
-	line_counter = 0
-	for line in f_RG:
-		line_counter += 1
-		line = line.strip('\n') #remove line break
-		#if not line == '' and not line == ' ': #skip empty lines (replaced by line below)
-		if line_counter % 3 != 0: # check if line no. is not dividable by 3, because these are the blank lines
-			RG_list.append(line) #append line to list
-			RG_list_backup.append(line)
-f_RG.close()
-
-print('Completed.')
-
-#Replace escaped characters with single custom characters because of card effect offsets
-Replacement_list_regular = [(r'\n', 'ｎ'), (r'\"', '＂'), ('●', '●＿＿')]
-Replacement_list_RegEx_search = [(r'\\n', 'ｎ'),(r'\\"', '＂'),(r'\(', '（'),(r'\)', '）')]
-Replacement_list_RegEx_replace = [(r'\\n', 'ｎ'),(r'\\"', '＂'),(r'\(', '（'),(r'\)', '）')]
-for i in range(len(RG_list)):	
-	if i % 2  == 0:
-		RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_RegEx_search)
-	elif i % 2  == 1:
-		RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_RegEx_replace)
-	RG_list[i] = Replace_in_str(RG_list[i], Replacement_list_regular)
-
-#5. Read Card_Pidx and Card_Part file into byte variables:
-
-if Mod_Card_Part_file == True:
-	print('Reading Card_Pidx and Card_Part files into string variables...')
-	
-	Card_Pidx_content = bytearray(ReadByteData(Card_Pidx_filename))
-	Card_Part_content = bytearray(ReadByteData(Card_Part_filename))
-	
-	print('Completed.')
-
-#6. Read CARD_Desc file and variables into lists
-
-print('Reading CARD_Desc file into list...')
-
-total_lines = CountFileLines(CARD_Desc_JSON_filename)
-
-with open(CARD_Desc_JSON_filename, 'rt', encoding="utf8") as f_CARD_Desc_JSON:
-	line_counter = 0	
-	for line in f_CARD_Desc_JSON:
-		line_counter += 1
-		line = line.strip('\n') #remove line break
-		if line_counter > 1 and line_counter < total_lines - 1:
-			CARD_Desc_list.append(line[5:len(line)-2]) #Leave out the 4 leading spaces and quotation marks and comma at the end of the line
-		elif line_counter == total_lines - 1:
-			CARD_Desc_list.append(line[5:len(line)-1]) #Leave out the 4 leading spaces and quotation marks at the end of the line
-f_CARD_Desc_JSON.close()
-
-print('Completed.')
-
-#Create Replacement_list to replace escaped characters with single custom characters because of card effect offsets:
-Replacement_list = [(r'\n', 'ｎ'), (r'\"', '＂'), (r'\\', '＼')] # Replace line breaks, escaped quotation marks/backslashes
-
-#Search for unicode characters and append replacement instructions to Replacement_list:
-for i in range(len(CARD_Desc_list)):	
-	for j in range(len(CARD_Desc_list[i])):
-		if len(CARD_Desc_list[i][j].encode('utf8')) == 2:
-			Replacement_list.append(tuple((CARD_Desc_list[i][j], CARD_Desc_list[i][j] + '＿')))
-		if len(CARD_Desc_list[i][j].encode('utf8')) == 3:
-			Replacement_list.append(tuple((CARD_Desc_list[i][j], CARD_Desc_list[i][j] + '＿＿')))
-		if len(CARD_Desc_list[i][j].encode('utf8')) == 4:
-			Replacement_list.append(tuple((CARD_Desc_list[i][j], CARD_Desc_list[i][j] + '＿＿＿')))
-
-Replacement_list  = list(set(Replacement_list)) #Remove duplicates from list
-
-#Apply replacement instructions in Replacement_list:
-for i in range(len(CARD_Desc_list)):
-	CARD_Desc_list[i] = Replace_in_str(CARD_Desc_list[i], Replacement_list)
-
-CARD_Desc_list.insert(0, '') # Insert a blank item at the start of this list to match its indices with the following Card_Pidx ones
-
-# For testing: Write card descriptions to text file (start)
-if Test_mode == True and Mod_Card_Part_file == True:
-	Card_desc_filename = 'Test - card descriptions before replacement.txt'
-	print('Writing card description list to file "' + Card_desc_filename + '"...')	
-	WriteDescs(Card_desc_filename,CARD_Desc_list)
-	print('Completed.')
-# For testing: Write card descriptions to text file (end)
-
-if Mod_Card_Part_file == True:
-	print('Reading Card_Pidx and Card_Part strings into lists...')
-	for i in range (0,len(Card_Pidx_content)-1,4):
-		CARD_Desc_ID_list.append(int(i/4))	
-		First_Effect_ID_list.append(Card_Pidx_content[i+1]*256 + Card_Pidx_content[i])	
-		Regular_Effects_Qty_list.append(int(math.floor(Card_Pidx_content[i+3]/16)))	
-		Pendulum_Effects_Qty_list.append(Card_Pidx_content[i+3] % 16)	
-		
-	for i in range (0,len(Card_Part_content)-1,4):	
-		Effect_ID_list.append(int(i/4))
-		Effect_Start_Offset_list.append(Card_Part_content[i+1]*256 + Card_Part_content[i])
-		Effect_End_Offset_list.append(Card_Part_content[i+3]*256 + Card_Part_content[i+2])
-	print('Completed.')
-
-# For testing: Write card effects to text file (start)
-if Test_mode == True and Mod_Card_Part_file == True:
-	Card_effects_filename = 'Test - card effects before replacement.txt'
-	print('Writing card effect list to file "' + Card_effects_filename + '"...')	
-	WriteEffects(Card_effects_filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list)
-	print('Completed.')
-# For testing: Write card effects to text file (end)
-
-#7. Apply string replacement instructions in replace guide text file, modify card effect offsets and add numbers before effects:
-
-if Mod_Card_Part_file == True:
-	print('Replacing in card descriptions and modifying card effect offsets...')
-elif Mod_Card_Part_file == False:
-	print('Replacing in card descriptions...')
-	
-for CARD_Desc_list_i in range(1,len(CARD_Desc_list),1):
-	for RG_list_i in range(0,len(RG_list)-1,2):		
-		Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
-		#Test start
-		if Test_mode == True:
-			Test_CARD_Desc_list_i = 0
-		#Test end
-		if Mod_Card_Part_file == True:
-			Regular_Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i]
-			Pendulum_Effects_Qty = Pendulum_Effects_Qty_list[CARD_Desc_list_i]
-			First_Effect_ID = First_Effect_ID_list[CARD_Desc_list_i]			
-			First_Pendulum_Effect_ID = 0
-			First_Pendulum_Effect_Offset = 0
-			First_Pendulum_Element_Offset = 0
-			if Pendulum_Effects_Qty > 0:
-				First_Pendulum_Effect_ID = First_Effect_ID + Regular_Effects_Qty
-				First_Pendulum_Effect_Offset = Effect_Start_Offset_list[First_Pendulum_Effect_ID]
-				First_Pendulum_Element_Offset = Card_Desc.find('[Pendulum Effect]')					
-		##Replacement - start
-		#Regular replacement:
-		if not any([x in RG_list_backup[RG_list_i] for x in [r'\.',r'\\','([','.*','|']]): #check if replacement instruction contains RegEx		
-			if Mod_Card_Part_file == True:
-				Before_replacement_index_list = Find_all_in_str(Card_Desc, RG_list[RG_list_i])			
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
-					print('Card_Desc before repl:',CARD_Desc_list[CARD_Desc_list_i])
-					print('RG search instruction:',RG_list[RG_list_i])
-					print('RG replace instruction:',RG_list[RG_list_i+1])
-					print('Before_replacement_index_list:',Before_replacement_index_list)
-				#Test end
-			CARD_Desc_list[CARD_Desc_list_i] = Card_Desc.replace(RG_list[RG_list_i],  #Simple string replacement
-																 RG_list[RG_list_i+1])			
-			if Mod_Card_Part_file == True:
-				Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
-				After_replacement_index_list = Find_all_in_str(Card_Desc, RG_list[RG_list_i+1])
-				if Before_replacement_index_list != []:					
-					while len(Before_replacement_index_list) < len(After_replacement_index_list) and After_replacement_index_list[0] < Before_replacement_index_list[0]:
-						del After_replacement_index_list[0]
-						#print("Before_replacement_index_list:",Before_replacement_index_list)
-						#print("After_replacement_index_list:",After_replacement_index_list)
-						
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
-					print('After_replacement_index_list:',After_replacement_index_list)
-					print('Card_Desc after repl:',CARD_Desc_list[CARD_Desc_list_i])
-				#Test end		
-		#RegEx replacement:
-		else:			
-			if Mod_Card_Part_file == True:				
-				Before_replacement_index_list = Find_all_RE_in_str(Card_Desc, RG_list[RG_list_i])
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
-					print('Card_Desc before repl:',CARD_Desc_list[CARD_Desc_list_i])
-					print('RG search instruction:',RG_list[RG_list_i])
-					print('RG replace instruction:',RG_list[RG_list_i+1])				
-				#Test end
-			CARD_Desc_list[CARD_Desc_list_i] = regex.sub(RG_list[RG_list_i],  #RegEx replacement, search string
-													  RG_list[RG_list_i+1].replace('\.','.'), #Remove backslash before dot in RegEx replacement string
-													  CARD_Desc_list[CARD_Desc_list_i]) #Card desc to be replaced
-			if Mod_Card_Part_file == True:
-				Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
-				RE_Search_Instr = RG_list[RG_list_i] #Instr = Instruction
-				RE_Repl_Instr = RG_list[RG_list_i+1] #Repl = Replacement
-				Group_Ref_Start_list = Find_all_in_str(RE_Search_Instr, '(') #Ref = Reference
-				Group_Ref_End_list = Find_all_in_str(RE_Search_Instr, ')')
-				Group_1_Ref_Start = Group_Ref_Start_list[0]
-				Group_1_Ref_End = Group_Ref_End_list[0] + 1
-				if len(Group_Ref_Start_list) > 2:
-					Group_2_Ref_Start = Group_Ref_Start_list[2]
-				else:
-					Group_2_Ref_Start =  -1
-				if len(Group_Ref_End_list) > 2:
-					Group_2_Ref_End = Group_Ref_End_list[2] + 1
-				else:
-					Group_2_Ref_End =  -1
-				RE_Repl_Instr_to_Search_Instr = Replace_in_str(RE_Repl_Instr, [(r'\1',RE_Search_Instr[Group_1_Ref_Start:Group_1_Ref_End]),(r'\2',RE_Search_Instr[Group_2_Ref_Start:Group_2_Ref_End])])
-				After_replacement_index_list = Find_all_RE_in_str(Card_Desc, RE_Repl_Instr_to_Search_Instr)
-				if Before_replacement_index_list != []:  #Delete entries at start of After_replacement_index_list so that it has the same length as Before_replacement_index_list
-					while len(Before_replacement_index_list) < len(After_replacement_index_list) and After_replacement_index_list[0] < Before_replacement_index_list[0]:
-						del After_replacement_index_list[0]					
-				
-				
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:					
-					print('Card_Desc after repl:',CARD_Desc_list[CARD_Desc_list_i])
-				#Test end				
-		##Replacement - end
-		#Card_Part modding - start
-		if Mod_Card_Part_file == True:
-			for i in range(0,len(Before_replacement_index_list)-1,2):
-				Before_replacement_start_index = Before_replacement_index_list[i]
-				Before_replacement_end_index = Before_replacement_index_list[i+1]
-				After_replacement_start_index = After_replacement_index_list[i]
-				After_replacement_end_index = After_replacement_index_list[i+1]
-				Replacement_diff = (After_replacement_end_index - After_replacement_start_index) - (Before_replacement_end_index - Before_replacement_start_index)
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and Before_replacement_index_list != []:
-					print('Before_replacement_index_list:',Before_replacement_index_list)
-					print('After_replacement_index_list:',After_replacement_index_list)				
-				#Test end
-				for j in range(Regular_Effects_Qty):
-					Effect_ID = First_Effect_ID + j
-					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
-					Effect_End_Offset = Effect_End_Offset_list[Effect_ID]
-
-					if (After_replacement_start_index > 0 and
-					       After_replacement_end_index > 0 and
-					       After_replacement_start_index  <  Effect_Start_Offset and
-					       After_replacement_end_index  <  Effect_End_Offset and
-					       abs(Replacement_diff) <= 2 and
-					       Card_Desc[Effect_Start_Offset] != '●'):
-						Effect_Start_Offset_list[Effect_ID] = Effect_Start_Offset + Replacement_diff
-
-					if After_replacement_end_index > 0 and After_replacement_end_index  <  Effect_End_Offset and abs(Replacement_diff) <= 2:
-						Effect_End_Offset_list[Effect_ID] = Effect_End_Offset + Replacement_diff
-				
-				if Pendulum_Effects_Qty > 0:
-					for k in range(Pendulum_Effects_Qty):
-						Pendulum_Effect_ID = First_Pendulum_Effect_ID + k
-						Pendulum_Effect_Start_Offset = Effect_Start_Offset_list[Pendulum_Effect_ID]
-						Pendulum_Effect_End_Offset = Effect_End_Offset_list[Pendulum_Effect_ID]
-					
-						if  After_replacement_start_index > 0 and After_replacement_start_index < Pendulum_Effect_Start_Offset and abs(Replacement_diff) <= 2:					
-							Effect_Start_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_Start_Offset + Replacement_diff
-
-						if After_replacement_end_index > 0 and After_replacement_end_index < Pendulum_Effect_End_Offset and abs(Replacement_diff) <= 2:
-							Effect_End_Offset_list[Pendulum_Effect_ID] = Pendulum_Effect_End_Offset + Replacement_diff
-				#Card_Part modding - end
-				#Test start
-				if Test_mode == True and CARD_Desc_list_i == Test_CARD_Desc_list_i and After_replacement_index_list != []:
-					Test_Effect_ID = 0
-					print('Effect_ID:',Test_Effect_ID)
-					Test_Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
-					Test_Effect_Start_Offset = Effect_Start_Offset_list[Test_Effect_ID]
-					print('Effect_Start_Offset:', Test_Effect_Start_Offset)				
-					Test_Effect_End_Offset = Effect_End_Offset_list[Test_Effect_ID]
-					print('Effect_End_Offset:', Test_Effect_End_Offset)
-					print('Effect:', Test_Card_Desc[Test_Effect_Start_Offset:Test_Effect_End_Offset])
-				#Test end
-	#Add numbers before effects - start
-	if Add_Effect_Numbers == True:
-		Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
-		Regular_Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i]
-		Pendulum_Effects_Qty = Pendulum_Effects_Qty_list[CARD_Desc_list_i]
-		Effects_Qty = Regular_Effects_Qty + Pendulum_Effects_Qty
-		First_Effect_ID = First_Effect_ID_list[CARD_Desc_list_i]			
-		First_Pendulum_Effect_ID = First_Effect_ID + Regular_Effects_Qty
-		
-		if Regular_Effects_Qty > 1:
-			for i in range(Regular_Effects_Qty):
-				#Create a sorted temporary regular effect start offset list to fix wrong effect numbers - start
-				Sorted_Temp_Regular_Effect_Start_Offset_list = []
-				for j in range(Regular_Effects_Qty):
-					Effect_ID = First_Effect_ID + j
-					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
-					Sorted_Temp_Regular_Effect_Start_Offset_list.append(Effect_Start_Offset)
-				Sorted_Temp_Regular_Effect_Start_Offset_list.sort()
-				#Create a sorted temporary regular effect start offset list to fix wrong effect numbers - end
-				Effect_ID = First_Effect_ID + i
-				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
-				for j in range(len(Sorted_Temp_Regular_Effect_Start_Offset_list)):
-					if Effect_Start_Offset == Sorted_Temp_Regular_Effect_Start_Offset_list[j]:
-						Fixed_Effect_ID = j
-				New_Card_Desc = Insert_into_str(Card_Desc, Effect_Numbers_list[Fixed_Effect_ID], Effect_Start_Offset)
-				Card_Desc = New_Card_Desc
-				CARD_Desc_list[CARD_Desc_list_i] = Card_Desc
-				##Fix effect offsets - start
-				#Fix offsets before the current one
-				for j in range(i):
-					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID - j]:
-						Effect_End_Offset_list[Effect_ID - j] += 1
-				for j in range(1,i):	
-					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID - j]:
-						Effect_Start_Offset_list[Effect_ID - j] += 1
-				#Fix offsets after the current one
-				for j in range(Effects_Qty - i):
-					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID + j]:
-						Effect_End_Offset_list[Effect_ID + j] += 1
-				for j in range(1,Effects_Qty - i):	
-					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID + j]:
-						Effect_Start_Offset_list[Effect_ID + j] += 1
-				##Fix effect offsets - end
-
-		if Pendulum_Effects_Qty > 1:
-			for i in range(Pendulum_Effects_Qty):
-				#Create a sorted temporary Pendulum effect start offset list to fix wrong effect numbers - start
-				Sorted_Temp_Pendulum_Effect_Start_Offset_list = []
-				for j in range(Pendulum_Effects_Qty):
-					Effect_ID = First_Pendulum_Effect_ID + j
-					Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
-					Sorted_Temp_Pendulum_Effect_Start_Offset_list.append(Effect_Start_Offset)
-				Sorted_Temp_Pendulum_Effect_Start_Offset_list.sort()
-				#Create a sorted temporary Pendulum effect start offset list to fix wrong effect numbers - end
-				Effect_ID = First_Pendulum_Effect_ID + i
-				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
-				for j in range(len(Sorted_Temp_Pendulum_Effect_Start_Offset_list)):
-					if Effect_Start_Offset == Sorted_Temp_Pendulum_Effect_Start_Offset_list[j]:
-						Fixed_Effect_ID = j
-				New_Card_Desc = Insert_into_str(Card_Desc, Effect_Numbers_list[Fixed_Effect_ID], Effect_Start_Offset)
-				Card_Desc = New_Card_Desc
-				CARD_Desc_list[CARD_Desc_list_i] = Card_Desc
-				##Fix effect offsets - start
-				#Fix offsets before the current one
-				for j in range(i):
-					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID - j]:
-						Effect_End_Offset_list[Effect_ID - j] += 1
-				for j in range(1,i):	
-					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID - j]:
-						Effect_Start_Offset_list[Effect_ID - j] += 1
-				#Fix offsets after the current one
-				for j in range(Pendulum_Effects_Qty - i):
-					if Effect_End_Offset_list[Effect_ID] < Effect_End_Offset_list[Effect_ID + j]:
-						Effect_End_Offset_list[Effect_ID + j] += 1
-				for j in range(1,Pendulum_Effects_Qty - i):	
-					if Effect_Start_Offset_list[Effect_ID] < Effect_Start_Offset_list[Effect_ID + j]:
-						Effect_Start_Offset_list[Effect_ID + j] += 1
-				##Fix effect offsets - end
-	#Add numbers before effects - end
-print('Completed.')
-
-#8. Convert Card_Part_list back to byte string
-if Mod_Card_Part_file == True:
-	print('Converting card part list to string variable...')
-	Card_Part_content = ''
-	for i in range(0,len(Effect_ID_list),1):
-		Card_Part_content = ''.join([Card_Part_content,
-									 Dec2Hex(Effect_Start_Offset_list[i] % 256),
-									 Dec2Hex(math.floor(int(Effect_Start_Offset_list[i]/256))),
-									 Dec2Hex(Effect_End_Offset_list[i] % 256),
-									 Dec2Hex(math.floor(int(Effect_End_Offset_list[i]/256)))
-									 ])	
-	Card_Part_content = binascii.unhexlify(Card_Part_content)
-	print('Completed.')
-
-#9. Write unencrypted Card_Part string to file
-
-if Mod_Card_Part_file == True:
-	print('Writing unencrypted Card_Part string to file...')	
-	WriteByteData(Card_Part_filename, Card_Part_content)
-	print('Completed.')
-
-# For testing: Write card descriptions to text file (start)
-if Test_mode == True and Mod_Card_Part_file == True:
-	Card_desc_filename = 'Test - card descriptions before final replacement.txt'
-	print('Writing card description list to file "' + Card_desc_filename + '"...')	
-	WriteDescs(Card_desc_filename,CARD_Desc_list)
-	print('Completed.')
-# For testing: Write card descriptions to text file (end)
-
-# For testing: Write card effects to text file (start)
-if Test_mode == True and Mod_Card_Part_file == True:
-	Card_effects_filename = 'Test - card effects before final replacement.txt'
-	print('Writing card effect list to file "' + Card_effects_filename + '"...')	
-	WriteEffects(Card_effects_filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list)
-	print('Completed.')
-# For testing: Write card effects to text file (end)
-
-#10. Write card description list to JSON file
-
-#Replace temporary custom strings with original strings
-Replacement_list =  [(sub[1], sub[0]) for sub in Replacement_list] # Swap tuples in Replacement_list
-Replacement_list.append(tuple(('（','(')))
-Replacement_list.append(tuple(('）',')')))
-for i in range(len(CARD_Desc_list)):
-	CARD_Desc_list[i] = Replace_in_str(CARD_Desc_list[i], Replacement_list)
-
-print('Writing card description list to file "' + CARD_Desc_JSON_filename + '".')
-
-with open(CARD_Desc_JSON_filename, 'wt', encoding='utf8') as f_CARD_Desc_JSON:
-	f_CARD_Desc_JSON.write('[\n')
-	for i in range(1,len(CARD_Desc_list)-1,1):
-		f_CARD_Desc_JSON.write('    "' + CARD_Desc_list[i] + '",\n')
-	f_CARD_Desc_JSON.write('    "' + CARD_Desc_list[len(CARD_Desc_list)-1] + '"\n')
-	f_CARD_Desc_JSON.write(']')
-f_CARD_Desc_JSON.close()
-
-print('Completed.')
-
 '''
-print("Press <ENTER> to continue")
-input()
+Credits:
+akintos: https://gist.github.com/akintos/04e2494c62184d2d4384078b0511673b
+crazydoomy: https://github.com/crazydoomy
+timelic: https://github.com/timelic/master-duel-chinese-translation-switch
 '''
+
+from typing import List
+import json
+import os
+import regex
+import sys
+import zlib
+
+#[Decrypt and split]
+
+def FileCheck(filename):
+	try:
+		open(filename, 'r')
+		return 1
+	except IOError:
+	#print 'Error: File does not appear to exist.'
+		return 0
+
+def Decrypt(data: bytes, m_iCryptoKey):	
+	data = bytearray(data)
+	try:
+		for i in range(len(data)):
+			v = i + m_iCryptoKey + 0x23D
+			v *= m_iCryptoKey
+			v ^= i % 7
+			data[i] ^= v & 0xFF			
+		return zlib.decompress(data)		
+	except zlib.error:
+		#print('zlib.error because of wrong crypo key:' + hex(m_iCryptoKey))		
+		return bytearray()
+	#except Exception:
+	#else:
+
+def ReadByteData(filename):
+	with open(f'{filename}', "rb") as f:
+		data = f.read()
+	f.close()
+	return data
+
+def WriteByteData(filename, data):
+	with open(f'{filename}', "wb") as f:
+		f.write(data)
+	f.close()
+
+def WriteDecByteData(filename, data):
+	with open(f'{filename}' + ".dec", "wb") as f:
+		f.write(data)
+	f.close()
+
+def WriteUTF8Data(filename, data):
+	with open(f'{filename}', "wt", encoding="utf8") as f:
+		f.write(data)
+	f.close()
+
+def CheckCryptoKey(filename, m_iCryptoKey):	
+	data = ReadByteData(filename)	
+	if Decrypt(data, m_iCryptoKey) == bytearray():
+		return 0
+	else:
+		return 1
+		
+def FindCryptoKey(filename):
+	print('No correct crypto key found. Searching for crypto key...')	
+	m_iCryptoKey = -0x1	
+	data = ReadByteData(filename)	
+	dec_data = bytearray()	
+	while dec_data == bytearray():			
+			m_iCryptoKey = m_iCryptoKey + 1				
+			dec_data = Decrypt(data, m_iCryptoKey)
+			#if os.stat('CARD_Indx.dec').st_size > 0:						
+	with open('!CryptoKey.txt', 'w') as f_CryptoKey:
+		f_CryptoKey.write(hex(m_iCryptoKey))
+	f_CryptoKey.close()
+	print('Found correct crypto key "' + hex(m_iCryptoKey) + '" and wrote it to file "!CryptoKey.txt".')	
+	return m_iCryptoKey
+
+def GetCryptoKey(filename):
+	if FileCheck('!CryptoKey.txt') == 1:
+		print('Trying to read crypto key from file...')
+		with open('!CryptoKey.txt', 'rt') as f_CryptoKey:		
+				m_iCryptoKey = int(f_CryptoKey.read(),16)			
+		f_CryptoKey.close()	
+		print('Reading crypto key "' + hex(m_iCryptoKey) + '" from file, checking if it is correct...')
+	else:
+		m_iCryptoKey = 0x0
+
+	if CheckCryptoKey(filename, m_iCryptoKey) == 1:
+		print('The crypto key "' + hex(m_iCryptoKey) + '" is correct.')
+	else:
+		m_iCryptoKey = FindCryptoKey(filename)	
+	return m_iCryptoKey
+
+def Check_files(Filename_list):
+	Checked_filename_list = []
+	File_found_list = []
+	
+	for i in range(len(Filename_list)):
+		Filename = Filename_list[i]
+		
+		if Filename.find('.') == -1: #if no dot found in filename			
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename + '.bytes') == 1				:
+				Checked_filename_list.append(Filename + '.bytes')
+			elif FileCheck(Filename + '.txt') == 1:
+				Checked_filename_list.append(Filename + '.txt')			
+		
+		if Filename.find('.dec') ==  len(Filename) - 4: #if ".dec" found at the end of filename
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename.replace('.dec', '.bytes.dec')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec', '.bytes.dec'))
+			elif FileCheck(Filename.replace('.dec', '.txt.dec')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec', '.txt.dec'))
+
+		if Filename.find('.dec.json') ==  len(Filename) - 9: #if ".dec.json" found at the end of filename									
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)				
+			if FileCheck(Filename.replace('.dec.json', '.bytes.dec.json')) == 1:				
+				Checked_filename_list.append(Filename.replace('.dec.json', '.bytes.dec.json'))				
+			if FileCheck(Filename.replace('.dec.json', '.txt.dec.json')) == 1:
+				Checked_filename_list.append(Filename.replace('.dec.json', '.txt.dec.json'))
+		
+		if Filename.find('Replace Guide.txt') !=  -1: #if "Replace Guide.txt" found in filename
+			if FileCheck(Filename) == 1:
+				Checked_filename_list.append(Filename)
+			elif FileCheck(Filename.replace(' ', '_')) == 1:
+				Checked_filename_list.append(Filename.replace(' ', '_'))
+	
+		if len(Checked_filename_list) == i + 1:
+			File_found_list.append(True)
+		else:
+			File_found_list.append(False)
+		
+	for i in range(len(Checked_filename_list)):
+		Filename = Filename_list[i]
+		Checked_filename = Checked_filename_list[i]
+		File_found = File_found_list[i]
+		
+		if  File_found == False:
+			print('"' + Filename + '" file not found.\nPress <ENTER> to exit.')
+			input()
+			sys.exit()
+			
+	return Checked_filename_list
+	
+def WriteJSON(l: list, json_file_path: str):
+    with open(json_file_path, 'w', encoding='utf8') as f:
+        json.dump(l, f, ensure_ascii=False, indent=4)
+
+# The start of Name and Desc is 0 and 4 respectively
+def ProgressiveProcessing(CARD_Indx_filename, filename, start):
+
+    # Read binary index
+    with open(CARD_Indx_filename + ".dec", "rb") as f:
+        hex_str_list = ("{:02X}".format(int(c))
+                        for c in f.read())  # Define variables to accept file contents
+    dec_list = [int(s, 16) for s in hex_str_list]  # Convert hexadecimal to decimal
+
+    # Get the index of Desc
+    indx = []
+    for i in range(start, len(dec_list), 8):
+        tmp = []
+        for j in range(4):
+            tmp.append(dec_list[i + j])
+        indx.append(tmp)
+
+    def FourToOne(x: List[int]) -> int:
+        res = 0
+        for i in range(3, -1, -1):
+            res *= 16 * 16
+            res += x[i]
+        return res
+
+    indx = [FourToOne(i) for i in indx]
+    indx = indx[1:]
+    	
+    # Convert Decrypted CARD files to JSON files    
+    def Solve(data: bytes, desc_indx: List[int]):
+        res = []
+        for i in range(len(desc_indx) - 1):
+            s = data[desc_indx[i]:desc_indx[i + 1]]
+            s = s.decode('UTF-8')
+            while len(s) > 0 and s[-1] == '\u0000':
+                s = s[:-1]
+            res.append(s)
+        return res
+
+    # Read Desc file
+    with open(f"{filename}" + ".dec", 'rb') as f:
+        data = f.read()
+
+    desc = Solve(data, indx)
+	
+    WriteJSON(desc, f"{filename}" + ".dec.json")
+	
+#[Merge and encrypt]
+
+def ReadJSON(json_file_path: str) -> list or dict:
+    with open(json_file_path, 'r', encoding='utf8') as f:
+        dic: list = json.load(f)
+    return dic
+	
+def GetStringLen(s: str):
+    return len(s.encode('utf-8'))
+    res = 0
+    for c in s:
+        res += getCharLen(c)
+    return res
+	
+def Solve_P_desc(desc):	
+    res = ""
+    res += monster_effect
+    if p_effect != '':
+        res += '\n'
+        res += separator
+        res += '\n'
+        res += p_effect
+    return res
+
+def IntTo4Hex(num: int) -> List[int]:
+    res = []
+    for _ in range(4):
+        res.append(num % 256)
+        num //= 256
+    return res
+
+def Encrypt(data: bytes, m_iCryptoKey, output_filename):
+    data = bytearray(zlib.compress(data))
+
+    for i in range(len(data)):
+        v = i + m_iCryptoKey + 0x23D
+        v *= m_iCryptoKey
+        v ^= i % 7
+        data[i] ^= v & 0xFF
+
+    with open(output_filename, "wb") as f:
+        f.write((data))
+    f.close()
+
+def CountFileLines(filename):
+	with open(filename, 'rt', encoding="utf8") as f:
+		for count, line in enumerate(f):
+			pass
+	f.close()
+	return count + 1
+
+def Dec2Hex(decimal):
+	conversion_table = {0: '0', 1: '1', 2: '2', 3: '3', 4: '4',
+						5: '5', 6: '6', 7: '7',
+						8: '8', 9: '9', 10: 'A', 11: 'B', 12: 'C',
+						13: 'D', 14: 'E', 15: 'F'}
+	if decimal == 0:
+		hexadecimal = '0'
+	else:
+		hexadecimal = ''	
+		while(decimal > 0):
+			remainder = decimal % 16
+			hexadecimal = conversion_table[remainder] + hexadecimal
+			decimal = decimal // 16
+	
+	if len(hexadecimal) % 2 != 0:
+		hexadecimal = '0' + hexadecimal
+	
+	return hexadecimal
+
+def Find_all_in_str(str, substr):
+	index_list = []
+	StrPos = 0 #String position
+	TempStrPos = 0
+	StrLen = len(str)
+	while StrPos < StrLen:
+		TempStrPos = str[StrPos:StrLen].find(substr)
+		if TempStrPos != -1:			
+			StrPos = StrPos + TempStrPos
+			index_list.append(StrPos)
+			index_list.append(StrPos + len(substr) - 1)
+			StrPos = StrPos + len(substr)
+		else:
+			break
+	return index_list
+
+def Find_all_RE_in_str(str, RegEx_substr):
+	iteration = regex.finditer(RegEx_substr, str)
+	index_list = []
+	for match in iteration:		
+		index_list.append(match.start())
+		index_list.append(match.end())
+	#index_list = [(match.start(), match.end()) for match in iteration]		
+	return index_list
+
+def Replace_in_str(str, replacement_list):
+	#Example: replacement_list = [('a', 'b'), ('c', 'd')]
+	for char, replacement in replacement_list:
+		if char in str:
+			str = str.replace(char, replacement)
+	return str
+
+def Insert_into_str(Str, InsertStr, StrPos):
+    return Str[:StrPos] + InsertStr + Str[StrPos:]
+
+def WriteEffects(filename, CARD_Desc_list, First_Effect_ID_list, Effect_Start_Offset_list, Effect_End_Offset_list, Regular_Effects_Qty_list, Pendulum_Effects_Qty_list):
+	with open(f'{filename}', "wt", encoding="utf8") as f:		
+		for CARD_Desc_list_i in range(len(CARD_Desc_list)):			
+			Effects_Qty = Regular_Effects_Qty_list[CARD_Desc_list_i] + Pendulum_Effects_Qty_list[CARD_Desc_list_i]
+			for i in range(Effects_Qty):
+				Effect_ID = First_Effect_ID_list[CARD_Desc_list_i] + i
+				Card_Desc = CARD_Desc_list[CARD_Desc_list_i]
+				Effect_Start_Offset = Effect_Start_Offset_list[Effect_ID]
+				Effect_End_Offset = Effect_End_Offset_list[Effect_ID]
+				f.write(Card_Desc[Effect_Start_Offset:Effect_End_Offset] + '\n')
+	f.close()
+
+def WriteDescs(filename, CARD_Desc_list):
+	with open(filename, 'wt', encoding='utf8') as f:
+		for i in range(0,len(CARD_Desc_list),1):
+			f.write(CARD_Desc_list[i] + '\n')		
+	f.close()

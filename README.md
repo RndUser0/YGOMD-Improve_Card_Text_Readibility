@@ -41,11 +41,11 @@ The mod contains only text files but to keep the risk of being warned or banned 
 * [UABEA](https://github.com/nesrak1/UABEA/releases) - Tool for importing a modded file back into a game file
 
 ### B. Location of the Unity files which contain the English Card_* files used by the game:
-* CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ab\abda12b1
-* CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\da\da0368f7
-* CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\fe\fe4cc0e3
-* Card_Part: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\d8\d80790df
-* Card_Pidx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\c3\c33a389b
+* CARD_Desc: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\d2\d25874ab
+* CARD_Indx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\a3\a3810eed
+* CARD_Name: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\87\87cea6f9
+* Card_Part: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\a1\a185f6c5
+* Card_Pidx: .\Yu-Gi-Oh!  Master Duel\LocalData\????????\0000\ba\bab85e81
 
 ### C. Preparation
 1. Click on the green **Code** button in the top right and then on **Download ZIP**.
